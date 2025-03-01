@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using StoreApi.Entities;
 
 namespace StoreApi.Controllers
 {
@@ -6,15 +7,15 @@ namespace StoreApi.Controllers
     [ApiController]
     public class ProductController : ControllerBase
     {
-        private static readonly List<StoreProduct> products = [
-                   new StoreProduct()
+        private static readonly List<Product> products = [
+                   new Product()
             {
                 Id = 1,
                 Name = "Gotway G25",
                 Brand = "Gotway",
                 Description = "an EUC!",
-                BatteryVoltage = 86,
-                HasSuspension = false,
+                ShortDescription = "one liner",
+
                 Price = 12000,
                 StockQuantity = 5
             }
@@ -23,13 +24,13 @@ namespace StoreApi.Controllers
 
 
         [HttpGet]
-        public ActionResult<List<StoreProduct>> GetProducts()
+        public ActionResult<List<Product>> GetProducts()
         {
             return Ok(products);
         }
 
         [HttpGet("{id}")]
-        public ActionResult<StoreProduct> GetProductById(int id)
+        public ActionResult<Product> GetProductById(int id)
         {
             var product = products.FirstOrDefault(p => p.Id == id);
 
@@ -42,7 +43,7 @@ namespace StoreApi.Controllers
         }
 
         [HttpPost]
-        public ActionResult<StoreProduct> AddProduct(StoreProduct product)
+        public ActionResult<Product> AddProduct(Product product)
         {
             if (product is null)
             {
@@ -56,7 +57,7 @@ namespace StoreApi.Controllers
         }
 
         [HttpPut("{id}")]
-        public IActionResult UpdateProduct(int id, StoreProduct updatedProduct)
+        public IActionResult UpdateProduct(int id, Product updatedProduct)
         {
             var oldProduct = products.FirstOrDefault(p => p.Id == id);
             if (oldProduct is null)
@@ -65,15 +66,14 @@ namespace StoreApi.Controllers
             }
 
             oldProduct.Name = updatedProduct.Name;
-            oldProduct.BatteryVoltage = updatedProduct.BatteryVoltage;
+            oldProduct.ShortDescription = updatedProduct.ShortDescription;
             oldProduct.Brand = updatedProduct.Brand;
             oldProduct.Description = updatedProduct.Description;
-            oldProduct.HasSuspension = updatedProduct.HasSuspension;
             oldProduct.ImageUrl = updatedProduct.ImageUrl;
             oldProduct.Price = updatedProduct.Price;
             oldProduct.StockQuantity = updatedProduct.StockQuantity;
 
-            return NoContent();
+            return Ok(oldProduct);
 
         }
     }
