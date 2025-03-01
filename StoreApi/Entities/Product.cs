@@ -7,8 +7,6 @@ public class Product
 {
     public int Id { get; set; }
     public required string Name { get; set; }
-    public required string ShortDescription { get; set; }
-
     public string? Brand { get; set; } //For filtering by brand
     //public bool? HasSuspension { get; set; }
     // For filtering by suspension
