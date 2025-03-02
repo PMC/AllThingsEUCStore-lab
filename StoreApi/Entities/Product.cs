@@ -20,6 +20,8 @@ public class Product
     public string? ImageUrl { get; set; }
 
     public string? Description { get; set; }
+
+
     // Navigation property for many-to-many relationship
     //        public ICollection<ProductCategory> ProductCategories { get; set; } = new List<ProductCategory>();
 
