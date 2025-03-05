@@ -18,6 +18,6 @@ public class Order
     public string? CustomerAddress2 { get; set; }
     public string? CustomerAddress3 { get; set; }
 
-    //public ICollection<OrderProduct> OrderedProducts { get; set; } = new List<OrderProduct>();
+    public ICollection<OrderProduct> OrderedProducts { get; set; } = new List<OrderProduct>();
 
 }
