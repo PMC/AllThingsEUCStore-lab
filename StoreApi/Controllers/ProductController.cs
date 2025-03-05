@@ -152,6 +152,19 @@ public class ProductController : ControllerBase
         oldProduct.Price = updatedProduct.Price;
         oldProduct.StockQuantity = updatedProduct.StockQuantity;
 
-        return Ok(oldProduct);
+        return Ok();
+    }
+
+    [HttpDelete("{id}")]
+    public IActionResult DeleteProduct(int id)
+    {
+        var productToBeDeleted = products.FirstOrDefault(p => p.Id == id);
+        if (productToBeDeleted is null)
+        {
+            return NotFound();
+        }
+
+        products.Remove(productToBeDeleted);
+        return Ok();
     }
 }

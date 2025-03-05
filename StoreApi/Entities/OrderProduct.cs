@@ -3,6 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace StoreApi.Entities;
 
+[Table("Order_Products")]
 public class OrderProduct
 {
     public int Id { get; set; }

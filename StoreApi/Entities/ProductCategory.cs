@@ -1,5 +1,8 @@
-﻿namespace StoreApi.Entities;
+﻿using System.ComponentModel.DataAnnotations.Schema;
 
+namespace StoreApi.Entities;
+
+[Table("Product_Category")]
 public class ProductCategory
 {
     public int Id { get; set; }

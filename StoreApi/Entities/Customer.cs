@@ -1,5 +1,8 @@
-﻿namespace StoreApi.Entities;
+﻿using System.ComponentModel.DataAnnotations.Schema;
 
+namespace StoreApi.Entities;
+
+[Table("Customers")]
 public class Customer
 {
     public int Id { get; set; }
