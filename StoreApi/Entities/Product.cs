@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 
 namespace StoreApi.Entities;
 
@@ -22,6 +23,7 @@ public class Product
 
     public string? Description { get; set; }
 
+    [JsonIgnore]
     public ICollection<Category> Categories { get; } = new List<Category>();
 
     // Navigation property for many-to-many relationship

@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace StoreApi.Entities;
 
-[Table("Order_Details")]
+[Table("OrderDetails")]
 public class OrderDetail
 {
     public int OrderDetailId { get; set; }
