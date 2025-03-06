@@ -1,23 +1,23 @@
-﻿@page "/ListProducts"
+﻿@page "/Test"
 @using StoreApi.Entities
 @inject HttpClient HttpClient
 
 
-<MudDataGrid T="Product" Items="@ProductList" Hover="true" Dense="true" MultiSelection="false" Filterable="true" FilterCaseSensitivity="DataGridFilterCaseSensitivity.CaseInsensitive" SortMode="SortMode.Multiple" QuickFilter="@_quickFilter">
+<MudDataGrid T="Product" Items="@ProductList" Hover="true"  Dense="true" MultiSelection="false" Filterable="true" FilterCaseSensitivity="DataGridFilterCaseSensitivity.CaseInsensitive" SortMode="SortMode.Multiple" QuickFilter="@_quickFilter">
 	<ToolBarContent>
 		<MudText Typo="Typo.h6">Products</MudText>
 		<MudSpacer />
 		<MudTextField @bind-Value="_searchString" Placeholder="Search" Adornment="Adornment.Start" Immediate="true"
-					  AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"></MudTextField>
+		              AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"></MudTextField>
 	</ToolBarContent>
 	<Columns>
 
-		<PropertyColumn Property="x => x.ProductId" Title="Id" />
-		<PropertyColumn Property="x => x.ProductName" Title="Name" />
-		<PropertyColumn Property="x => x.Brand" />
-		<PropertyColumn Property="x => x.StockQuantity" />
-		<PropertyColumn Property="x => x.Price" Format="C" />
-		<PropertyColumn Property="x => x.Description" />
+		<PropertyColumn Property="x => x.ProductId" Title="Id"/>
+		<PropertyColumn Property="x => x.ProductName" Title="Name"/>
+		<PropertyColumn Property="x => x.Brand"/>
+		<PropertyColumn Property="x => x.StockQuantity"/>
+		<PropertyColumn Property="x => x.Price" Format="C"/>
+		<PropertyColumn Property="x => x.Description"/>
 	</Columns>
 	<PagerContent>
 		<MudDataGridPager T="Product" />
@@ -25,7 +25,7 @@
 </MudDataGrid>
 
 @code {
-	private string _searchString = "";
+	private string _searchString ="";
 	public IEnumerable<Product> ProductList = new List<Product>();
 	private string? _serviceEndpoint;
 	protected override async Task OnInitializedAsync()
@@ -49,10 +49,10 @@
 		if (x.ProductName.Contains(_searchString, StringComparison.OrdinalIgnoreCase))
 			return true;
 
-		if (x.Description is not null && x.Description.Contains(_searchString, StringComparison.OrdinalIgnoreCase))
+		if (x.Description is not null &&  x.Description.Contains(_searchString, StringComparison.OrdinalIgnoreCase))
 			return true;
 
-		if (x.Brand is not null && x.Brand.Contains(_searchString, StringComparison.OrdinalIgnoreCase))
+		if (x.Brand  is not null && x.Brand.Contains(_searchString, StringComparison.OrdinalIgnoreCase))
 			return true;
 
 		return false;
