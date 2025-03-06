@@ -2,28 +2,24 @@
 @using StoreApi.Entities
 @inject HttpClient HttpClient
 
-
-<MudDataGrid T="Product" Items="@ProductList" Hover="true"  Dense="true" MultiSelection="false" Filterable="true" FilterCaseSensitivity="DataGridFilterCaseSensitivity.CaseInsensitive" SortMode="SortMode.Multiple" QuickFilter="@_quickFilter">
-	<ToolBarContent>
-		<MudText Typo="Typo.h6">Products</MudText>
-		<MudSpacer />
-		<MudTextField @bind-Value="_searchString" Placeholder="Search" Adornment="Adornment.Start" Immediate="true"
-		              AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"></MudTextField>
-	</ToolBarContent>
-	<Columns>
-
-		<PropertyColumn Property="x => x.ProductId" Title="Id"/>
-		<PropertyColumn Property="x => x.ProductName" Title="Name"/>
-		<PropertyColumn Property="x => x.Brand"/>
-		<PropertyColumn Property="x => x.StockQuantity"/>
-		<PropertyColumn Property="x => x.Price" Format="C"/>
-		<PropertyColumn Property="x => x.Description"/>
-	</Columns>
-	<PagerContent>
-		<MudDataGridPager T="Product" />
-	</PagerContent>
-</MudDataGrid>
-
+<MudContainer Class="py-4 py-sm-8 py-md-12 py-lg-16 py-xl-20">
+	<MudGrid Style="--icon-opacity: 0.1">
+		@foreach (Product product in ProductList)
+		{
+			
+		
+			<MudItem xs="12" sm="6" md="6" >
+				<MudCard>
+					<MudCardContent >
+						<MudIconButton Icon="@Icons.Material.Outlined.CatchingPokemon" Color="Color.Primary" Size="Size.Medium" Ripple="false" Class="rounded-circle mb-2" Style="background-color: rgba(var(--mud-palette-primary-rgb), var(--icon-opacity)) !important; cursor: default;"/>
+						<MudText  Typo="Typo.h4" Class="mb-2">@product.ProductName</MudText>
+						<MudText Typo="Typo.body1">@product.Description</MudText>
+					</MudCardContent>
+				</MudCard>
+			</MudItem>
+		}
+	</MudGrid>
+</MudContainer>
 @code {
 	private string _searchString ="";
 	public IEnumerable<Product> ProductList = new List<Product>();
