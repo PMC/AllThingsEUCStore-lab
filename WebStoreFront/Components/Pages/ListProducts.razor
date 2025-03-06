@@ -1,0 +1,34 @@
+﻿@page "/ListProducts"
+@using StoreApi.Entities
+@inject HttpClient HttpClient
+
+
+<PageTitle>ListProducts</PageTitle>
+<h3>ListProducts</h3>
+<h3>@serviceEndpoint</h3>
+@if (products == null)
+{
+	<p>No Products found.</p>
+}
+else
+{
+	@foreach (var p in products)
+	{
+		<h4>@p.ProductName</h4>
+	}
+}
+@code {
+	public string? serviceEndpoint;
+	public Product[]? products;
+	protected override async Task OnInitializedAsync()
+	{
+		serviceEndpoint = $"{HttpClient.BaseAddress}StoreApi/Product";
+		await GetProducts();
+
+	}
+
+	private async Task GetProducts()
+	{
+		products = await HttpClient.GetFromJsonAsync<Product[]>(serviceEndpoint);
+	}
+}
