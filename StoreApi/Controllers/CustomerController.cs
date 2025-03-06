@@ -11,24 +11,24 @@ namespace StoreApi.Controllers
         {
             new Customer
             {
-                Id = 1,
-                Name = "Peter Parker",
+                CustomerId = 1,
+                CustomerName = "Peter Parker",
                 CustomerAddress1 = "HowardStreet",
                 CustomerAddress2 = "233 44 NEW YORK",
                 Email = "peter@howard.com"
             },
             new Customer
             {
-                Id = 2,
-                Name = "RoboCop",
+                CustomerId = 2,
+                CustomerName = "RoboCop",
                 CustomerAddress1 = "AiStreet",
                 CustomerAddress2 = "111 44 NEW YORK",
                 Email = "RoboCop@howard.com"
             },
             new Customer
             {
-                Id = 3,
-                Name = "John Saxberg",
+                CustomerId = 3,
+                CustomerName = "John Saxberg",
                 CustomerAddress1 = "Saxbergen",
                 CustomerAddress2 = "121 44 SWEDEN",
                 Email = "John@Saxberg.com"
@@ -45,7 +45,7 @@ namespace StoreApi.Controllers
         [HttpGet("{id}")]
         public ActionResult<Customer> GetCustomerById(int id)
         {
-            var customer = _customers.FirstOrDefault(p => p.Id == id);
+            var customer = _customers.FirstOrDefault(p => p.CustomerId == id);
 
             if (customer is null)
             {
@@ -63,26 +63,25 @@ namespace StoreApi.Controllers
                 return BadRequest();
             }
 
-            newCustomer.Id = _customers.Max(p => p.Id) + 1;
+            newCustomer.CustomerId = _customers.Max(p => p.CustomerId) + 1;
             _customers.Add(newCustomer);
 
-            return CreatedAtAction(nameof(GetCustomerById), new { id = newCustomer.Id }, newCustomer);
+            return CreatedAtAction(nameof(GetCustomerById), new { id = newCustomer.CustomerId }, newCustomer);
         }
 
         [HttpPut("{id}")]
         public IActionResult UpdateCustomer(int id, Customer updatedCustomer)
         {
-            var oldCustomer = _customers.FirstOrDefault(p => p.Id == id);
+            var oldCustomer = _customers.FirstOrDefault(p => p.CustomerId == id);
             if (oldCustomer is null)
             {
                 return NotFound();
             }
 
-            oldCustomer.Name = updatedCustomer.Name;
+            oldCustomer.CustomerName = updatedCustomer.CustomerName;
             oldCustomer.Email = updatedCustomer.Email;
             oldCustomer.CustomerAddress1 = updatedCustomer.CustomerAddress1;
             oldCustomer.CustomerAddress2 = updatedCustomer.CustomerAddress2;
-            oldCustomer.CustomerAddress3 = updatedCustomer.CustomerAddress3;
 
             return Ok();
         }
@@ -90,7 +89,7 @@ namespace StoreApi.Controllers
         [HttpDelete("{id}")]
         public IActionResult DeleteCustomer(int id)
         {
-            var customerToBeDeleted = _customers.FirstOrDefault(p => p.Id == id);
+            var customerToBeDeleted = _customers.FirstOrDefault(p => p.CustomerId == id);
             if (customerToBeDeleted is null)
             {
                 return NotFound();

@@ -5,9 +5,9 @@ namespace StoreApi.Entities;
 [Table("Categories")]
 public class Category
 {
-    public int Id { get; set; }
+    public int CategoryId { get; set; }
 
-    public required string Name { get; set; }
+    public required string CategoryName { get; set; }
 
     //public int? ParentCategoryId { get; set; }
 
@@ -17,5 +17,5 @@ public class Category
 
     //public ICollection<Category> Children { get; set; } = new List<Category>();
 
-    public ICollection<ProductCategory> ProductCategories { get; set; } = new List<ProductCategory>();
+    public ICollection<Product> Products { get; } = new List<Product>();
 }

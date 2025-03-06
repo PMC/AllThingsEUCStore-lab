@@ -6,8 +6,8 @@ namespace StoreApi.Entities;
 [Table("Products")]
 public class Product
 {
-    public int Id { get; set; }
-    public required string Name { get; set; }
+    public int ProductId { get; set; }
+    public required string ProductName { get; set; }
     public string? Brand { get; set; } //For filtering by brand
     //public bool? HasSuspension { get; set; }
     // For filtering by suspension
@@ -22,6 +22,7 @@ public class Product
 
     public string? Description { get; set; }
 
+    public ICollection<Category> Categories { get; } = new List<Category>();
 
     // Navigation property for many-to-many relationship
     //        public ICollection<ProductCategory> ProductCategories { get; set; } = new List<ProductCategory>();
