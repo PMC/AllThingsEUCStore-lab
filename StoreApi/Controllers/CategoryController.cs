@@ -42,6 +42,29 @@ namespace StoreApi.Controllers
             return CreatedAtAction(nameof(GetCategoryById), new { id = newCategory.CategoryId }, newCategory);
         }
 
+        [HttpPost("{productId}/{categoryId}")]
+        public async Task<IActionResult> AddProductToCategory(int productId, int categoryId)
+        {
+            var product = await _context.Products.FindAsync(productId);
+            if (product is null)
+            {
+                return NotFound("Product not found");
+            }
+
+            var category = await _context.Categories.FindAsync(categoryId);
+            if (category is null)
+            {
+                return NotFound("Category not found");
+            }
+
+
+            category.Products.Add(product);
+
+            await _context.SaveChangesAsync();
+
+            return Ok();
+        }
+
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateCategory(int id, Category updatedCategory)
         {
