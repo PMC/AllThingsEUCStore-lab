@@ -3,7 +3,7 @@
 @using System.Net.Http.Headers;
 @inject HttpClient HttpClient
 
-
+<h1>Status @LatestJSON</h1>
 <MudDataGrid T="Product" Items="@ProductList" Hover="true" Groupable="true"  Dense="true" 
 MultiSelection="false" Filterable="true" 
 FilterCaseSensitivity="DataGridFilterCaseSensitivity.CaseInsensitive" 
@@ -35,7 +35,7 @@ CommittedItemChanges="@CommittedItemChanges"
 		<MudDataGridPager T="Product" />
 	</PagerContent>
 </MudDataGrid>
-<h1>@LatestJSON</h1>
+
 @code {
 	private string _searchString = "";
 	public string LatestJSON = "";
@@ -88,11 +88,8 @@ CommittedItemChanges="@CommittedItemChanges"
 				}
 			}
 		};
-		using (var response = await HttpClient.SendAsync(request))
-		{
-			response.EnsureSuccessStatusCode();
-			LatestJSON = await response.Content.ReadAsStringAsync();
-			
-		}
+		using var response = await HttpClient.SendAsync(request);
+		response.EnsureSuccessStatusCode();
+		await response.Content.ReadAsStringAsync();
 	}
 }
