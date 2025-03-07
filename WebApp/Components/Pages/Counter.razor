@@ -1,5 +1,7 @@
 ﻿@page "/counter"
-@rendermode InteractiveServer
+@rendermode @(new InteractiveServerRenderMode(prerender: false))
+@using Microsoft.AspNetCore.Components.Server.ProtectedBrowserStorage
+@inject ProtectedLocalStorage ProtectedLocalStorage
 
 <MudPopoverProvider />
 <MudDialogProvider />
@@ -9,15 +11,26 @@
 
 <MudText Typo="Typo.h3" GutterBottom="true">Counter</MudText>
 
-<MudText Typo="Typo.body1" Class="mb-4">Current count: @currentCount</MudText>
+<MudText Typo="Typo.body1" Class="mb-4">Current count: @_currentCount</MudText>
 
 <MudButton Color="Color.Primary" Variant="Variant.Filled" @onclick="IncrementCount">Click me</MudButton>
 
 @code {
-    private int currentCount = 0;
 
-    private void IncrementCount()
-    {
-        currentCount++;
+	private int _currentCount = 0;
+
+	private async Task IncrementCount()
+	{
+		_currentCount++;
+		await ProtectedLocalStorage.SetAsync("testCounter", _currentCount);
+	}
+
+	protected override async Task OnInitializedAsync()
+	{
+		var result = await ProtectedLocalStorage.GetAsync<int>("testCounter");
+
+		_currentCount = result.Success ? result.Value : 0;
+		//   return base.OnInitializedAsync();
     }
+
 }
