@@ -12,7 +12,7 @@
 			 MultiSelection="false" Filterable="true"
 			 FilterCaseSensitivity="DataGridFilterCaseSensitivity.CaseInsensitive"
 			 SortMode="SortMode.Multiple" QuickFilter="@_quickFilter"
-			 ReadOnly="@_readOnly"
+			 ReadOnly="@_readOnly" ColumnResizeMode="ResizeMode.Column"
 			 CommittedItemChanges="@CommittedItemChanges">
 	<ToolBarContent>
 		<MudText Typo="Typo.h6">Products</MudText>
@@ -21,18 +21,19 @@
 					  AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"></MudTextField>
 	</ToolBarContent>
 	<Columns>
-
-		<PropertyColumn Property="x => x.ProductId" Title="Id" Groupable="false" />
-		<PropertyColumn Property="x => x.ProductName" Title="Name" Groupable="false" />
-		<PropertyColumn Property="x => x.Brand" />
-		<PropertyColumn Property="x => x.StockQuantity" />
-		<PropertyColumn Property="x => x.Price" Format="C" Groupable="false" />
-		<PropertyColumn Resizable="false" Property="x => x.Description" Groupable="false" />
-		<TemplateColumn Hidden="@(_readOnly)" CellClass="d-flex justify-end">
+		<TemplateColumn Hidden="@(_readOnly)" Groupable="false">
 			<CellTemplate>
 				<MudIconButton Size="@Size.Small" Icon="@Icons.Material.Outlined.Edit" OnClick="@context.Actions.StartEditingItemAsync" />
 			</CellTemplate>
 		</TemplateColumn>
+		<PropertyColumn Property="x => x.ProductId" Title="Id" Groupable="false" />
+		<PropertyColumn Property="x => x.ProductName" Title="Name" Groupable="false" />
+		<PropertyColumn Property="x => x.Brand" />
+		<PropertyColumn Property="x => x.StockQuantity" Title="Quantity" />
+		<PropertyColumn Property="x => x.Price" Format="C" Groupable="false" />
+		<PropertyColumn Hidden="true" Property="x => x.ImageUrl" Required="false" Groupable="false" />
+		<PropertyColumn Hidden="true" Property="x => x.Description" Groupable="false" />
+
 	</Columns>
 	<PagerContent>
 		<MudDataGridPager T="Product" />
