@@ -4,25 +4,26 @@
 @using System.Net.Http.Headers;
 @inject HttpClient HttpClient
 @inject IDialogService DialogService
+@inject ISnackbar Snackbar
 <MudPopoverProvider />
 <MudDialogProvider FullWidth="true" MaxWidth="MaxWidth.Small"/>
 <MudSnackbarProvider />
 
 <h1>Status @LatestJSON</h1>
 <MudDataGrid T="@Product" Items="@ProductList" Hover="true" Groupable="true" Dense="true"
-			 MultiSelection="false" Filterable="true"
-			 FilterCaseSensitivity="DataGridFilterCaseSensitivity.CaseInsensitive"
-			 SortMode="SortMode.Multiple" QuickFilter="@_quickFilter"
-			 ReadOnly="@_readOnly" ColumnResizeMode="ResizeMode.Column"
-			 CommittedItemChanges="@CommittedItemChanges"
-			 FixedHeader="true"
-			 ShowMenuIcon="true"
-			 >
+MultiSelection="false" Filterable="true"
+FilterCaseSensitivity="DataGridFilterCaseSensitivity.CaseInsensitive"
+SortMode="SortMode.Multiple" QuickFilter="@_quickFilter"
+ReadOnly="@_readOnly" ColumnResizeMode="ResizeMode.Column"
+CommittedItemChanges="@CommittedItemChanges"
+FixedHeader="true"
+ShowMenuIcon="true"
+>
 	<ToolBarContent>
 		<MudText Typo="Typo.h6">Products</MudText>
 		<MudSpacer />
 		<MudTextField @bind-Value="_searchString" Placeholder="Search" Adornment="Adornment.Start" Immediate="true"
-					  AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"></MudTextField>
+		AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"></MudTextField>
 	</ToolBarContent>
 
 	<Columns >
@@ -67,7 +68,7 @@
 	private string _searchString = "";
 	public string LatestJSON = "";
 	private bool _readOnly = false;
-	public IEnumerable<Product> ProductList = new List<Product>();
+	public List<Product> ProductList = new List<Product>();
 	private string? _serviceEndpoint;
 	protected override async Task OnInitializedAsync()
 	{
@@ -122,11 +123,42 @@
 
 	private async Task OnEditProduct(Product contextItem)
 	{
+		int index = ProductList.IndexOf(contextItem);
+		var copiedProduct = new Product {         
+				ProductName = contextItem.ProductName,
+				ProductId = contextItem.ProductId,
+				BatteryCapacity = contextItem.BatteryCapacity,
+				Description = contextItem.Description,
+				HasSuspension = contextItem.HasSuspension,
+				MaxRange = contextItem.MaxRange,
+				MaxSpeed = contextItem.MaxSpeed,
+				TireSize = contextItem.TireSize,
+				Weight = contextItem.Weight,
+				StockQuantity = contextItem.StockQuantity,
+				Brand = contextItem.Brand,
+				ImageUrl = contextItem.ImageUrl,
+				Price = contextItem.Price
+			};
+
 		var options = new DialogOptions { FullWidth = true, MaxWidth = MaxWidth.Medium };
 		var parameters = new DialogParameters<ProductEditDialog> { { x => x.Product, contextItem } };
 
 		var dialog = await DialogService.ShowAsync<ProductEditDialog>("Update Product", parameters);
 		var result = await dialog.Result;
+
+		if (result is null || result.Canceled)
+		{
+			Snackbar.Add("Canceled, Product not updated", Severity.Error);
+			ProductList[index] = copiedProduct;
+			StateHasChanged();
+		}
+		else
+		{
+			await CommittedItemChanges(contextItem);
+			Snackbar.Add("Product Updated", Severity.Success);
+			await GetProducts();
+			StateHasChanged();
+		}
 		
 	}
 

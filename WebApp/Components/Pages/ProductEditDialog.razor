@@ -66,15 +66,12 @@
 
 	private void Cancel()
 	{
-		Snackbar.Add("Canceled, Product not updated", Severity.Error);
-		MudDialog.Close(DialogResult.Cancel());
+		MudDialog.Cancel();
 	}
 		
 
 	private void UpdateProduct()
 	{
-		//In a real world scenario this bool would probably be a service to delete the item from api/database
-		Snackbar.Add("Product Updated", Severity.Success);
 		MudDialog.Close(DialogResult.Ok(Product));
 	}
 }
