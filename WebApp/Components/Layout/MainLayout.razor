@@ -1,6 +1,6 @@
 ﻿@inherits LayoutComponentBase
 
-<MudThemeProvider />
+<MudThemeProvider IsDarkMode="IsDarkMode" />
 
 <MudLayout>
     <MudAppBar Elevation="1">
@@ -24,6 +24,7 @@
 
 @code {
     private bool _drawerOpen = true;
+    bool IsDarkMode { get; set; } = false;
 }
 
 
