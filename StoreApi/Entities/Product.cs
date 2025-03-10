@@ -21,6 +21,12 @@ public class Product
     public int? StockQuantity { get; set; }
     public string? ImageUrl { get; set; }
 
+    public int? TireSize { get; set; }
+    public int? MaxRange { get; set; }
+    public int? MaxSpeed { get; set; }
+    public int? Weight { get; set; }
+    public int? BatteryCapacity { get; set; }
+    public bool? HasSuspension { get; set; }
     public string? Description { get; set; }
 
     [JsonIgnore]

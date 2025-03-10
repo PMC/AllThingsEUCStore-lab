@@ -12,7 +12,7 @@
 			var stockText = product.StockQuantity > 0 ? "In Stock": "Out of Stock";
 			var colorText = product.StockQuantity > 0 ? "Color: Green" : "Color: Red";
 
-			<MudItem xs="12" md="12">
+			<MudItem xs="12" md="12" lg="12">
 				<MudCard>
 					<MudGrid>
 						<MudItem xs="12" sm="7" md="6" lg="4">
@@ -33,32 +33,32 @@
 									<MudItem>
 										<MudIcon Icon="@Icons.Material.Filled.TireRepair" Style="font-size: 4rem;align-content: center">Tire Size</MudIcon>
 										<MudText Align="Align.Center" Typo="Typo.body2">Tire Size</MudText>
-										<MudText Align="Align.Center" Typo="Typo.h6">16"</MudText>
+										<MudText Align="Align.Center" Typo="Typo.h6">@product.TireSize"</MudText>
 									</MudItem>
 									<MudItem >
 										<MudIcon Icon="@Icons.Material.Filled.Speed" Style="font-size: 4rem;">Speed</MudIcon>
 										<MudText Align="Align.Center" Typo="Typo.body2">Max Speed</MudText>
-										<MudText Align="Align.Center" Typo="Typo.h6">50 km/h</MudText>
+										<MudText Align="Align.Center" Typo="Typo.h6">@product.MaxSpeed km/h</MudText>
 									</MudItem>
 									<MudItem>
 										<MudIcon Icon="@Icons.Material.Filled.Map" Style="font-size: 4rem;">Range</MudIcon>
 										<MudText Align="Align.Center" Typo="Typo.body2">Max Range</MudText>
-										<MudText Align="Align.Center" Typo="Typo.h6">150 km</MudText>
+										<MudText Align="Align.Center" Typo="Typo.h6">@product.MaxRange km</MudText>
 									</MudItem>
 									<MudItem>
 										<MudIcon Icon="@Icons.Material.Filled.CleanHands" Style="font-size: 4rem;">Weight</MudIcon>
 										<MudText Align="Align.Center" Typo="Typo.body2">Weight</MudText>
-										<MudText Align="Align.Center" Typo="Typo.h6">24 kg</MudText>
+										<MudText Align="Align.Center" Typo="Typo.h6">@product.Weight kg</MudText>
 									</MudItem>
 									<MudItem>
 										<MudIcon Icon="@Icons.Material.Filled.BatteryChargingFull" Style="font-size: 4rem;">Battery</MudIcon>
 										<MudText Align="Align.Center" Typo="Typo.body2">Battery</MudText>
-										<MudText Align="Align.Center" Typo="Typo.h6">1480 Wh</MudText>
+										<MudText Align="Align.Center" Typo="Typo.h6">@product.BatteryCapacity Wh</MudText>
 									</MudItem>
 									<MudItem>
 										<MudIcon Icon="@Icons.Material.Filled.AlignHorizontalCenter" Style="font-size: 4rem;">Suspension</MudIcon>
 										<MudText Align="Align.Center" Typo="Typo.body2">Suspension</MudText>
-										<MudText Align="Align.Center" Typo="Typo.h6">NO</MudText>
+										<MudText Align="Align.Center" Typo="Typo.h6">@product.HasSuspension</MudText>
 									</MudItem>
 								</MudGrid>
 								<MudButton Variant="Variant.Filled" Color="Color.Primary" Class="mt-4">Learn More</MudButton>

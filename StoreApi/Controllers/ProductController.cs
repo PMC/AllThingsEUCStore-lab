@@ -58,6 +58,12 @@ public class ProductController(SqliteDbContext context) : ControllerBase
         product.ImageUrl = updatedProduct.ImageUrl;
         product.Price = updatedProduct.Price;
         product.StockQuantity = updatedProduct.StockQuantity;
+        product.BatteryCapacity = updatedProduct.BatteryCapacity;
+        product.HasSuspension = updatedProduct.HasSuspension;
+        product.MaxRange = updatedProduct.MaxRange;
+        product.MaxSpeed = updatedProduct.MaxSpeed;
+        product.TireSize = updatedProduct.TireSize;
+        product.Weight = updatedProduct.Weight;
 
         await _context.SaveChangesAsync();
 
