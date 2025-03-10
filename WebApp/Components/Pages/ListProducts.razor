@@ -8,12 +8,13 @@
 <MudSnackbarProvider />
 
 <h1>Status @LatestJSON</h1>
-<MudDataGrid T="Product" Items="@ProductList" Hover="true" Groupable="true" Dense="true"
+<MudDataGrid T="@Product" Items="@ProductList" Hover="true" Groupable="true" Dense="true"
 			 MultiSelection="false" Filterable="true"
 			 FilterCaseSensitivity="DataGridFilterCaseSensitivity.CaseInsensitive"
 			 SortMode="SortMode.Multiple" QuickFilter="@_quickFilter"
 			 ReadOnly="@_readOnly" ColumnResizeMode="ResizeMode.Column"
-			 CommittedItemChanges="@CommittedItemChanges"
+			 CommittedItemChanges="@CommittedItemChanges" 
+
 			 ShowMenuIcon="true"
 			 >
 	<ToolBarContent>
@@ -38,7 +39,11 @@
 		<PropertyColumn Property="x => x.MaxRange" Required="false" Groupable="true" />
 		<PropertyColumn Property="x => x.Weight" Required="false" Groupable="true" />
 		<PropertyColumn Property="x => x.BatteryCapacity" Required="false" Groupable="true" />
-		<PropertyColumn Property="x => x.HasSuspension" Required="true" Groupable="true" />
+		<PropertyColumn Property="x => x.HasSuspension" Required="true" Groupable="true">
+			<EditTemplate>
+				<MudCheckBox @bind-Value="context.Item.HasSuspension">HasSuspension?</MudCheckBox>
+			</EditTemplate>
+		</PropertyColumn>
 		<PropertyColumn Hidden="true" Property="x => x.ImageUrl" Required="false" Groupable="false" />
 		<PropertyColumn Hidden="true" Property="x => x.Description" Groupable="false" />
 
