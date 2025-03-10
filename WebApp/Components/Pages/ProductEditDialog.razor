@@ -5,23 +5,51 @@
 	<TitleContent>
 		<MudText Typo="Typo.h6">
 			<MudIcon Icon="@Icons.Material.Filled.Edit" Class="mr-3 mb-n1"/>
-			Update Product (@Product.ProductId)
+			Update Product (Id = @Product.ProductId)
 		</MudText>
 	</TitleContent>
 	<DialogContent>
-		<MudTextField @bind-Value="Product.ProductName" Label="Name" ReadOnly="false" Required="true" Variant="Variant.Outlined" ShrinkLabel />
-		<MudTextField @bind-Value="Product.Brand" Label="Brand" ReadOnly="false" Required="false" Variant="Variant.Outlined" ShrinkLabel />
-		<MudTextField @bind-Value="Product.Price" Label="Price" Adornment="Adornment.End" AdornmentText="kr" AdornmentColor="Color.Info" ReadOnly="false" Required="false" Variant="Variant.Outlined" ShrinkLabel />
-		<MudTextField @bind-Value="Product.StockQuantity" Label="Quantity" Mask="@(new PatternMask("00000"))" ReadOnly="false" Required="false" Variant="Variant.Outlined" ShrinkLabel />
-		<MudTextField @bind-Value="Product.ImageUrl" Label="ImageUrl" ReadOnly="false" Required="false" Variant="Variant.Outlined" ShrinkLabel />
-		<MudTextField @bind-Value="Product.TireSize" Label="Tire Size" Mask="@(new PatternMask("00000"))" ReadOnly="false" Adornment="Adornment.End" AdornmentColor="Color.Info" AdornmentText='"'  Required="false" Variant="Variant.Outlined" ShrinkLabel />
-		<MudTextField @bind-Value="Product.MaxRange" Label="Max Range" Mask="@(new PatternMask("00000"))" HelperText="(in km)" Adornment="Adornment.End" AdornmentText="km" AdornmentColor="Color.Info" ReadOnly="false" Required="false" Variant="Variant.Outlined" ShrinkLabel />
-		<MudTextField @bind-Value="Product.MaxSpeed" HelperText="(in km/h)" Mask="@(new PatternMask("00000"))" Label="Max Speed" ReadOnly="false" Adornment="Adornment.End" AdornmentColor="Color.Info" AdornmentText="km/h" Required="false" Variant="Variant.Outlined" ShrinkLabel />
-		<MudTextField @bind-Value="Product.Weight" Mask="@(new PatternMask("00000"))" Label="Weight" HelperText="(in Kg)" ReadOnly="false" Adornment="Adornment.End" AdornmentColor="Color.Info" AdornmentText="kg" Required="false" Variant="Variant.Outlined" ShrinkLabel />
-		<MudTextField @bind-Value="Product.BatteryCapacity"  Mask="@(new PatternMask("00000"))" Label="Battery Capacity" HelperText="(in Wh)" AdornmentColor="Color.Info" Adornment="Adornment.End" AdornmentText="Wh" ReadOnly="false" Required="false" Variant="Variant.Outlined" ShrinkLabel />
-		<MudCheckBox @bind-Value="Product.HasSuspension" Label="Has Suspension?" ReadOnly="false" Required="false" Variant="Variant.Outlined" ShrinkLabel />
-		<MudTextField @bind-Value="Product.Description" Label="Description"  ReadOnly="false" Required="false" Variant="Variant.Outlined" AutoGrow="true" ShrinkLabel />
+		<MudGrid>
+			<MudItem xs="12" sm="7" md="7" >
+				<MudTextField @bind-Value="Product.ProductName" Label="Name" ReadOnly="false" Required="true" Variant="Variant.Outlined" ShrinkLabel />
+			</MudItem>
+			<MudItem xs="12" sm="5" md="5" >
+				<MudTextField @bind-Value="Product.Brand" Label="Brand" ReadOnly="false" Required="false" Variant="Variant.Outlined" ShrinkLabel />
+			</MudItem>
+			<MudItem xs="12" sm="4" md="4" >
+				<MudTextField @bind-Value="Product.StockQuantity" Label="Quantity" Mask="@(new PatternMask("00000"))" ReadOnly="false" Required="false" Variant="Variant.Outlined" ShrinkLabel />
+			</MudItem>
+			<MudItem xs="12" sm="8" md="8" >
+				<MudTextField @bind-Value="Product.Price" Label="Price" Adornment="Adornment.End" AdornmentText="kr" AdornmentColor="Color.Info" ReadOnly="false" Required="false" Variant="Variant.Outlined" ShrinkLabel />
+			</MudItem>
+			<MudItem xs="12" sm="4" md="4" >
+				<MudTextField @bind-Value="Product.TireSize" Label="Tire Size" Mask="@(new PatternMask("00000"))" ReadOnly="false" Adornment="Adornment.End" AdornmentColor="Color.Info" AdornmentText='"' Required="false" Variant="Variant.Outlined" ShrinkLabel />
+			</MudItem>
 
+			<MudItem xs="12" sm="4" md="4">
+				<MudTextField @bind-Value="Product.MaxRange" Label="Max Range" Mask="@(new PatternMask("00000"))" HelperText="(in km)" Adornment="Adornment.End" AdornmentText="km" AdornmentColor="Color.Info" ReadOnly="false" Required="false" Variant="Variant.Outlined" ShrinkLabel />
+			</MudItem>
+			<MudItem xs="12" sm="4" md="4" >
+				<MudTextField @bind-Value="Product.MaxSpeed" HelperText="(in km/h)" Mask="@(new PatternMask("00000"))" Label="Max Speed" ReadOnly="false" Adornment="Adornment.End" AdornmentColor="Color.Info" AdornmentText="km/h" Required="false" Variant="Variant.Outlined" ShrinkLabel />
+			</MudItem>
+			<MudItem xs="12" sm="4" md="4" >
+				<MudTextField @bind-Value="Product.Weight" Mask="@(new PatternMask("00000"))" Label="Weight" HelperText="(in Kg)" ReadOnly="false" Adornment="Adornment.End" AdornmentColor="Color.Info" AdornmentText="kg" Required="false" Variant="Variant.Outlined" ShrinkLabel />
+			</MudItem>
+			<MudItem xs="12" sm="4" md="4" >
+				<MudTextField @bind-Value="Product.BatteryCapacity" Mask="@(new PatternMask("00000"))" Label="Battery Capacity" HelperText="(in Wh)" AdornmentColor="Color.Info" Adornment="Adornment.End" AdornmentText="Wh" ReadOnly="false" Required="false" Variant="Variant.Outlined" ShrinkLabel />
+			</MudItem>
+			<MudItem xs="12" sm="12" md="12">
+				<MudCheckBox @bind-Value="Product.HasSuspension" Label="Has Suspension? (can be null)" ReadOnly="false" Required="false" Variant="Variant.Outlined" ShrinkLabel />
+			</MudItem>
+
+			<MudItem xs="12" sm="12" md="12" >
+				<MudTextField @bind-Value="Product.ImageUrl" Label="ImageUrl" ReadOnly="false" Required="false" Variant="Variant.Outlined" ShrinkLabel />
+			</MudItem>
+			<MudItem xs="12" sm="12" md="12" >
+				<MudTextField @bind-Value="Product.Description" Label="Description" ReadOnly="false" Required="false" Variant="Variant.Outlined" AutoGrow="true" ShrinkLabel />
+			</MudItem>
+
+		</MudGrid>
 	</DialogContent>
 	<DialogActions>
 		<MudButton OnClick="Cancel">Cancel</MudButton>
