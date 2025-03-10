@@ -3,8 +3,9 @@
 @using StoreApi.Entities
 @using System.Net.Http.Headers;
 @inject HttpClient HttpClient
+@inject IDialogService DialogService
 <MudPopoverProvider />
-<MudDialogProvider />
+<MudDialogProvider FullWidth="true" MaxWidth="MaxWidth.Small"/>
 <MudSnackbarProvider />
 
 <h1>Status @LatestJSON</h1>
@@ -13,8 +14,8 @@
 			 FilterCaseSensitivity="DataGridFilterCaseSensitivity.CaseInsensitive"
 			 SortMode="SortMode.Multiple" QuickFilter="@_quickFilter"
 			 ReadOnly="@_readOnly" ColumnResizeMode="ResizeMode.Column"
-			 CommittedItemChanges="@CommittedItemChanges" 
-
+			 CommittedItemChanges="@CommittedItemChanges"
+			 FixedHeader="true"
 			 ShowMenuIcon="true"
 			 >
 	<ToolBarContent>
@@ -23,29 +24,37 @@
 		<MudTextField @bind-Value="_searchString" Placeholder="Search" Adornment="Adornment.Start" Immediate="true"
 					  AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"></MudTextField>
 	</ToolBarContent>
-	<Columns>
-		<TemplateColumn Hidden="@(_readOnly)" Groupable="false">
+
+	<Columns >
+
+		<TemplateColumn Hidden="@(_readOnly)" Groupable="false" >
 			<CellTemplate>
-				<MudIconButton Size="@Size.Small" Icon="@Icons.Material.Outlined.Edit" OnClick="@context.Actions.StartEditingItemAsync" />
+				<MudIconButton Size="@Size.Small" Icon="@Icons.Material.Outlined.Edit" OnClick="() => OnEditProduct(context.Item)"/>
 			</CellTemplate>
+
 		</TemplateColumn>
-		<PropertyColumn Property="x => x.ProductId" Title="Id" Groupable="false" />
-		<PropertyColumn Property="x => x.ProductName" Title="Name" Groupable="false" />
-		<PropertyColumn Property="x => x.Brand" />
-		<PropertyColumn Property="x => x.StockQuantity" Title="Quantity" />
-		<PropertyColumn Property="x => x.Price" Format="C" Groupable="false" />
-		<PropertyColumn Property="x => x.TireSize" Required="false" Groupable="true" />
-		<PropertyColumn Property="x => x.MaxSpeed" Required="false" Groupable="true" />
-		<PropertyColumn Property="x => x.MaxRange" Required="false" Groupable="true" />
-		<PropertyColumn Property="x => x.Weight" Required="false" Groupable="true" />
-		<PropertyColumn Property="x => x.BatteryCapacity" Required="false" Groupable="true" />
+		<PropertyColumn Property="x => x.ProductId" Title="Id" Groupable="false" Editable="false"/>
+		<PropertyColumn Property="x => x.ProductName" Title="Name" Groupable="false"/>
+		<PropertyColumn Property="x => x.Brand"/>
+		<PropertyColumn Property="x => x.StockQuantity" Title="Quantity"/>
+		<PropertyColumn Property="x => x.Price" Format="C" Groupable="false"/>
+		<PropertyColumn Property="x => x.TireSize" Required="false" Groupable="true"/>
+		<PropertyColumn Property="x => x.MaxSpeed" Required="false" Groupable="true"/>
+		<PropertyColumn Property="x => x.MaxRange" Required="false" Groupable="true"/>
+		<PropertyColumn Property="x => x.Weight" Required="false" Groupable="true"/>
+		<PropertyColumn Property="x => x.BatteryCapacity" Required="false" Groupable="true"/>
 		<PropertyColumn Property="x => x.HasSuspension" Required="true" Groupable="true">
 			<EditTemplate>
-				<MudCheckBox @bind-Value="context.Item.HasSuspension">HasSuspension?</MudCheckBox>
+				<MudCheckBox Label="HasSuspension?" @bind-Value="context.Item.HasSuspension" Size="Size.Large"/>
 			</EditTemplate>
 		</PropertyColumn>
-		<PropertyColumn Hidden="true" Property="x => x.ImageUrl" Required="false" Groupable="false" />
-		<PropertyColumn Hidden="true" Property="x => x.Description" Groupable="false" />
+
+		<PropertyColumn Hidden="true" Property="x => x.ImageUrl" Required="false" Groupable="false"/>
+		<PropertyColumn Hidden="true" Property="x => x.Description" Groupable="false">
+			<EditTemplate >
+				<MudTextField Label="Description" @bind-Value="context.Item.Description" AutoGrow="true" Variant="Variant.Outlined"/>
+			</EditTemplate>
+		</PropertyColumn>
 
 	</Columns>
 	<PagerContent>
@@ -54,6 +63,7 @@
 </MudDataGrid>
 
 @code {
+
 	private string _searchString = "";
 	public string LatestJSON = "";
 	private bool _readOnly = false;
@@ -109,4 +119,15 @@
 		response.EnsureSuccessStatusCode();
 		await response.Content.ReadAsStringAsync();
 	}
+
+	private async Task OnEditProduct(Product contextItem)
+	{
+		var options = new DialogOptions { FullWidth = true, MaxWidth = MaxWidth.Medium };
+		var parameters = new DialogParameters<ProductEditDialog> { { x => x.Product, contextItem } };
+
+		var dialog = await DialogService.ShowAsync<ProductEditDialog>("Update Product", parameters);
+		var result = await dialog.Result;
+
+	}
+
 }
