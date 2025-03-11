@@ -140,7 +140,7 @@ ShowMenuIcon="true"
 				Price = contextItem.Price
 			};
 
-		var options = new DialogOptions { FullWidth = true, MaxWidth = MaxWidth.Medium };
+		var options = new DialogOptions { FullWidth = true, MaxWidth = MaxWidth.Medium};
 		var parameters = new DialogParameters<ProductEditDialog> { { x => x.Product, contextItem } };
 
 		var dialog = await DialogService.ShowAsync<ProductEditDialog>("Update Product", parameters);
