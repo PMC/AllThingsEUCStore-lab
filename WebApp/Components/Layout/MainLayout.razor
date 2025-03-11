@@ -1,12 +1,14 @@
-﻿@inherits LayoutComponentBase
+﻿@using MudBlazor.Utilities
+@inherits LayoutComponentBase
 
-<MudThemeProvider IsDarkMode="IsDarkMode" />
+<MudThemeProvider IsDarkMode="IsDarkMode" DefaultScrollbar="true" Theme="_myCustomTheme" />
 
 <MudLayout>
-	<MudAppBar Elevation="1" Style="background-color: rgb(17, 24, 39);color: rgb(255, 255, 255);">
+	<MudAppBar Elevation="1" >
         <MudStaticNavDrawerToggle DrawerId="nav-drawer" Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start" />
         <MudText Typo="Typo.h5" Class="ml-3">Application</MudText>
-
+        
+        
     </MudAppBar>
     <MudDrawer id="nav-drawer" @bind-Open="_drawerOpen" ClipMode="DrawerClipMode.Always" Elevation="2">
         <NavMenu />
@@ -26,6 +28,39 @@
 @code {
     private bool _drawerOpen = true;
     bool IsDarkMode { get; set; } = false;
+	//rgb(246, 253, 202)
+	//font-family: Inter, sans-serif;
+	MudTheme _myCustomTheme = new()
+	{
+		PaletteLight = new PaletteLight()
+		{
+			AppbarBackground = MudColor.Parse("rgb(17, 24, 39)"),
+			AppbarText = MudColor.Parse("rgb(255, 255, 255)"),
+			Background = MudColor.Parse("#eeeeee"),
+			DrawerIcon = MudColor.Parse("#d1d5db"),
+			DrawerText = MudColor.Parse("#d1d5db"),
+			DrawerBackground = MudColor.Parse("#1f2937"),
+			Primary = MudColor.Parse("#4969ee"),
+			Error = MudColor.Parse("#ff0000"),
+			Secondary = MudColor.Parse("#334155"),
+				
+		},
+		PaletteDark = new PaletteDark()
+
+		{
+			Primary = MudColor.Parse("#4969ee")
+		},
+		Typography = new Typography()
+		{
+			Default = new DefaultTypography()
+			{
+				FontFamily = new[] { "Roboto", "Helvetica", "Arial", "sans-serif" }
+			}
+		}
+	};
+
+
+
 }
 
 
