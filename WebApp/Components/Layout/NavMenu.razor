@@ -2,8 +2,9 @@
 
 @inject NavigationManager NavigationManager
 
-<MudNavMenu>
-    <MudNavLink Href="" Match="NavLinkMatch.All" Icon="@Icons.Material.Filled.Home">Home</MudNavLink>
+<MudPaper Style="background-color: rgb(31, 41, 55); color: rgb(209, 213, 219)" Height="100%">
+<MudNavMenu >
+	<MudNavLink Href="" Match="NavLinkMatch.All" Icon="@Icons.Material.Filled.Home">Home</MudNavLink>
     <MudNavLink Href="counter" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.Add">Counter</MudNavLink>
     
     <MudNavLink Href="weather" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.List">Weather</MudNavLink>
@@ -29,11 +30,11 @@
         </NotAuthorized>
     </AuthorizeView>
 </MudNavMenu>
-
+</MudPaper>
 
 @code {
     private string? currentUrl;
-
+	//color: rgb(66, 104, 213) primary color
     protected override void OnInitialized()
     {
         currentUrl = NavigationManager.ToBaseRelativePath(NavigationManager.Uri);

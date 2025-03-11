@@ -3,9 +3,10 @@
 <MudThemeProvider IsDarkMode="IsDarkMode" />
 
 <MudLayout>
-    <MudAppBar Elevation="1">
+	<MudAppBar Elevation="1" Style="background-color: rgb(17, 24, 39);color: rgb(255, 255, 255);">
         <MudStaticNavDrawerToggle DrawerId="nav-drawer" Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start" />
         <MudText Typo="Typo.h5" Class="ml-3">Application</MudText>
+
     </MudAppBar>
     <MudDrawer id="nav-drawer" @bind-Open="_drawerOpen" ClipMode="DrawerClipMode.Always" Elevation="2">
         <NavMenu />
