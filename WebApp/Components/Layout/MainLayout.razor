@@ -42,7 +42,7 @@
 			DrawerBackground = MudColor.Parse("#1f2937"),
 			Primary = MudColor.Parse("#4969ee"),
 			Error = MudColor.Parse("#ff0000"),
-			Secondary = MudColor.Parse("#334155"),
+			Secondary = MudColor.Parse("#334155")
 				
 		},
 		PaletteDark = new PaletteDark()
@@ -52,10 +52,20 @@
 		},
 		Typography = new Typography()
 		{
+			
 			Default = new DefaultTypography()
 			{
-				FontFamily = new[] { "Roboto", "Helvetica", "Arial", "sans-serif" }
-			}
+					FontFamily = new[] { "InterPMC", "sans-serif"
+				},FontSize = "15px", LineHeight = "22.5px"
+			},
+			H1 = new H1Typography() {FontWeight = "700"},
+				H2 = new H2Typography() { FontWeight = "700" },
+				H3 = new H3Typography() { FontWeight = "700" },
+				H4 = new H4Typography() { FontWeight = "700" },
+				H5 = new H5Typography() { FontWeight = "700" },
+				H6 = new H6Typography() { FontWeight = "700" },
+				Button = new ButtonTypography() { FontWeight = "700" }
+
 		}
 	};
 
