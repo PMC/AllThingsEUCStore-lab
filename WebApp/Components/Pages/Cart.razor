@@ -3,17 +3,17 @@
  <MudPopoverProvider />
  <MudDialogProvider />
  <MudSnackbarProvider />
- <MudContainer Class="mt-16" MaxWidth="MaxWidth.Large">
-	 <MudGrid>
-		<MudItem md="6" xs="6" Style="background-color: white">
-			
-			<MudFlexBreak/>
+ <MudContainer >
+	<MudGrid >
+
+		<MudItem md="6" xs="6" Class="ma-4" Style="background-color: white">
 			<MudText Typo="Typo.h5" GutterBottom="true">Shipping Information</MudText>
-			<MudFlexBreak/>
-			<MudItem xs="12" md="5">
+
+
+			<MudItem xs="12" md="3">
 				<MudTextField Label="First Name" @bind-Value="Order.FirstName" Variant="Variant.Outlined" />
 			</MudItem>
-			<MudItem xs="12" md="5">
+			<MudItem xs="12" md="3">
 				<MudTextField Label="Last Name" @bind-Value="Order.LastName" Variant="Variant.Outlined" />
 			</MudItem>
 			<MudItem xs="12">
@@ -22,10 +22,10 @@
 			<MudItem xs="12">
 				<MudTextField Label="Apartment, suite. etc (optional)" @bind-Value="Order.Address2"  Variant="Variant.Outlined"  />
 			</MudItem>
-			<MudItem xs="12" md="5">
+			<MudItem xs="12" md="3">
 				<MudTextField Label="City" @bind-Value="Order.City"  Variant="Variant.Outlined"  />
 			</MudItem>
-			<MudItem xs="12" md="5">
+			<MudItem xs="12" md="3">
 				<MudTextField Label="Zip Code" @bind-Value="Order.ZipCode" Required="true" Variant="Variant.Outlined" HelperTextOnFocus="true" 
 				              RequiredError="Zip Code is required!"/>
 			</MudItem>
@@ -45,7 +45,7 @@
 		 </MudItem>
 		 <MudItem md="5" xs="5">
 			 <MudText Typo="Typo.h5" GutterBottom="true">Shopping Cart</MudText>
-			 <MudFlexBreak/>
+	
 			 @if (CartItems != null && CartItems.Any())
 			 {
 				 <MudTable Items="@CartItems" Hover="true" Breakpoint="Breakpoint.Sm" Elevation="1" Outlined="true">
