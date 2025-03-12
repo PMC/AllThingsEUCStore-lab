@@ -72,7 +72,7 @@
 </MudContainer>
 @code {
 	private string _searchString = "";
-	public IEnumerable<Product> ProductList = new List<Product>();
+	public IEnumerable<Product>? ProductList = new List<Product>();
 	private string? _serviceEndpoint;
 	protected override async Task OnInitializedAsync()
 	{
@@ -83,7 +83,7 @@
 
 	private async Task GetProducts()
 	{
-		ProductList = await HttpClient.GetFromJsonAsync<List<Product>>(_serviceEndpoint);
+		if (HttpClient != null) ProductList = await HttpClient.GetFromJsonAsync<List<Product>>(_serviceEndpoint);
 	}
 
 	// quick filter - filter globally across multiple columns with the same input

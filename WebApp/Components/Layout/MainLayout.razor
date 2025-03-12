@@ -4,13 +4,13 @@
 <MudThemeProvider IsDarkMode="IsDarkMode" DefaultScrollbar="true" Theme="_myCustomTheme" />
 
 <MudLayout>
-	<MudAppBar Elevation="1" >
+	<MudAppBar Elevation="10" >
         <MudStaticNavDrawerToggle DrawerId="nav-drawer" Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start" />
-        <MudText Typo="Typo.h5" Class="ml-3">Application</MudText>
-        
-        
-    </MudAppBar>
-    <MudDrawer id="nav-drawer" @bind-Open="_drawerOpen" ClipMode="DrawerClipMode.Always" Elevation="2">
+        <MudText Typo="Typo.h5" Class="ml-3">AllThingsEUCStore</MudText>
+        <MudSpacer />
+		<MudIconButton Size="Size.Medium" Href="/checkout" Icon="@Icons.Material.Filled.ShoppingCart" Color="Color.Inherit" ClickPropagation="true" />
+	</MudAppBar>
+    <MudDrawer id="nav-drawer" @bind-Open="_drawerOpen" ClipMode="DrawerClipMode.Docked" Elevation="10">
         <NavMenu />
     </MudDrawer>
     <MudMainContent Class="mt-16 pa-4">
@@ -42,7 +42,8 @@
 			DrawerBackground = MudColor.Parse("#1f2937"),
 			Primary = MudColor.Parse("#4969ee"),
 			Error = MudColor.Parse("#ff0000"),
-			Secondary = MudColor.Parse("#334155")
+			Secondary = MudColor.Parse("#334155"),
+				Tertiary = MudColor.Parse("#f6fdca")
 				
 		},
 		PaletteDark = new PaletteDark()

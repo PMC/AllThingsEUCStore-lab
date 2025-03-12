@@ -67,7 +67,7 @@ ShowMenuIcon="true"
 	private string _searchString = "";
 	public string LatestJSON = "";
 	private bool _readOnly = false;
-	public List<Product> ProductList = new List<Product>();
+	public List<Product>? ProductList = new List<Product>();
 	private string? _serviceEndpoint;
 	protected override async Task OnInitializedAsync()
 	{
@@ -122,8 +122,10 @@ ShowMenuIcon="true"
 
 	private async Task OnEditProduct(Product contextItem)
 	{
-		int index = ProductList.IndexOf(contextItem);
-		var copiedProduct = new Product {         
+		if (ProductList != null)
+		{
+			int index = ProductList.IndexOf(contextItem);
+			var copiedProduct = new Product {         
 				ProductName = contextItem.ProductName,
 				ProductId = contextItem.ProductId,
 				BatteryCapacity = contextItem.BatteryCapacity,
@@ -139,26 +141,26 @@ ShowMenuIcon="true"
 				Price = contextItem.Price
 			};
 
-		var options = new DialogOptions { FullWidth = true, MaxWidth = MaxWidth.Medium};
-		var parameters = new DialogParameters<ProductEditDialog> { { x => x.Product, contextItem } };
+			var options = new DialogOptions { FullWidth = true, MaxWidth = MaxWidth.Medium};
+			var parameters = new DialogParameters<ProductEditDialog> { { x => x.Product, contextItem } };
 
-		var dialog = await DialogService.ShowAsync<ProductEditDialog>("Update Product", parameters);
-		var result = await dialog.Result;
+			var dialog = await DialogService.ShowAsync<ProductEditDialog>("Update Product", parameters);
+			var result = await dialog.Result;
 
-		if (result is null || result.Canceled)
-		{
-			Snackbar.Add("Canceled, Product not updated", Severity.Error);
-			ProductList[index] = copiedProduct;
-			StateHasChanged();
+			if (result is null || result.Canceled)
+			{
+				Snackbar.Add("Canceled, Product not updated", Severity.Error);
+				ProductList[index] = copiedProduct;
+				StateHasChanged();
+			}
+			else
+			{
+				await CommittedItemChanges(contextItem);
+				Snackbar.Add("Product Updated", Severity.Success);
+				await GetProducts();
+				StateHasChanged();
+			}
 		}
-		else
-		{
-			await CommittedItemChanges(contextItem);
-			Snackbar.Add("Product Updated", Severity.Success);
-			await GetProducts();
-			StateHasChanged();
-		}
-		
 	}
 
 }
