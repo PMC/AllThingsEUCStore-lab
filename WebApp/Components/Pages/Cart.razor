@@ -1,0 +1,124 @@
+﻿ @page "/cart"
+
+ <MudPopoverProvider />
+ <MudDialogProvider />
+ <MudSnackbarProvider />
+ <MudContainer Class="mt-16" MaxWidth="MaxWidth.Large">
+	 <MudGrid>
+		<MudItem md="6" xs="6" Style="background-color: white">
+			
+			<MudFlexBreak/>
+			<MudText Typo="Typo.h5" GutterBottom="true">Shipping Information</MudText>
+			<MudFlexBreak/>
+			<MudItem xs="12" md="5">
+				<MudTextField Label="First Name" @bind-Value="Order.FirstName" Variant="Variant.Outlined" />
+			</MudItem>
+			<MudItem xs="12" md="5">
+				<MudTextField Label="Last Name" @bind-Value="Order.LastName" Variant="Variant.Outlined" />
+			</MudItem>
+			<MudItem xs="12">
+				<MudTextField Label="Address" @bind-Value="Order.Address1" Variant="Variant.Outlined"  />
+			</MudItem>
+			<MudItem xs="12">
+				<MudTextField Label="Apartment, suite. etc (optional)" @bind-Value="Order.Address2"  Variant="Variant.Outlined"  />
+			</MudItem>
+			<MudItem xs="12" md="5">
+				<MudTextField Label="City" @bind-Value="Order.City"  Variant="Variant.Outlined"  />
+			</MudItem>
+			<MudItem xs="12" md="5">
+				<MudTextField Label="Zip Code" @bind-Value="Order.ZipCode" Required="true" Variant="Variant.Outlined" HelperTextOnFocus="true" 
+				              RequiredError="Zip Code is required!"/>
+			</MudItem>
+			<MudItem xs="12">
+				<MudTextField Label="Email" @bind-Value="Order.Email" Variant="Variant.Outlined" HelperTextOnFocus="true" ShrinkLabel
+				              RequiredError="Email is required!" InputType="InputType.Email"/>
+			</MudItem>
+			<MudItem xs="12">
+				<MudTextField Label="Phone Number" @bind-Value="Order.PhoneNumber" InputType="InputType.Telephone" Variant="Variant.Outlined" HelperTextOnFocus="true"  />
+			</MudItem>
+
+
+
+			<MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="PlaceOrder" Class="mt-3">
+				Place Order
+			</MudButton>
+		 </MudItem>
+		 <MudItem md="5" xs="5">
+			 <MudText Typo="Typo.h5" GutterBottom="true">Shopping Cart</MudText>
+			 <MudFlexBreak/>
+			 @if (CartItems != null && CartItems.Any())
+			 {
+				 <MudTable Items="@CartItems" Hover="true" Breakpoint="Breakpoint.Sm" Elevation="1" Outlined="true">
+					 <HeaderContent>
+						 <MudTh>Product</MudTh>
+						 <MudTh>Quantity</MudTh>
+						 <MudTh>Price</MudTh>
+						 <MudTh>Total</MudTh>
+					 </HeaderContent>
+					 <RowTemplate>
+						 <MudTd DataLabel="Product">@context.ProductName</MudTd>
+						 <MudTd DataLabel="Quantity">@context.Quantity</MudTd>
+						 <MudTd DataLabel="Price">@context.Price</MudTd>
+						 <MudTd DataLabel="Total">@(context.Quantity * context.Price)</MudTd>
+					 </RowTemplate>
+					 <FooterContent>
+
+						 <MudTh></MudTh>
+						 <MudTh></MudTh>
+						 <MudTh Style="font-weight: bold;">Total</MudTh>
+						 <MudTh Class="ml-auto" Style="font-weight: bold;">$@CartItems.Sum(item => item.Quantity * item.Price)</MudTh>
+					 </FooterContent>
+				 </MudTable>
+			 }
+			 else
+			 {
+				 <MudText>Your cart is empty.</MudText>
+			 }
+		 </MudItem>
+	 </MudGrid>
+ </MudContainer>
+
+
+@code {
+	public class CartItem
+	{
+		public string? ProductName { get; set; }
+		public int Quantity { get; set; }
+		public decimal Price { get; set; }
+	}
+
+
+	public class OrderInfo
+	{
+		public string? FirstName { get; set; }
+		public string? LastName { get; set; }
+		public string? Address1 { get; set; }
+		public string? Address2 { get; set; }
+		public string? City { get; set; }
+		public string? ZipCode { get; set; }
+		public string? Email { get; set; }
+		public string? PhoneNumber { get; set; }
+	}
+
+
+	private List<CartItem> CartItems = new List<CartItem>()
+  {
+  new CartItem { ProductName = "Product 1", Quantity = 2, Price = 10.00M },
+  new CartItem { ProductName = "Product 2", Quantity = 1, Price = 20.00M },
+  new CartItem { ProductName = "Product 3", Quantity = 3, Price = 5.00M }
+  };
+
+
+	private OrderInfo Order = new OrderInfo();
+
+
+	private void PlaceOrder()
+	{
+		// TODO: Implement order placement logic here
+		Console.WriteLine("Order placed!");
+		Console.WriteLine($"Name: {Order.FirstName} {Order.LastName}");
+		Console.WriteLine($"Address: {Order.Address1},{Order.Address2}, {Order.City}, {Order.ZipCode}");
+		Console.WriteLine($"Email: {Order.Email}");
+		Console.WriteLine($"Phone: {Order.PhoneNumber}");
+	}
+ }
