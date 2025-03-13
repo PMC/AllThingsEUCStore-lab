@@ -1,82 +1,82 @@
 ﻿ @page "/cart"
-
- <MudPopoverProvider />
- <MudDialogProvider />
- <MudSnackbarProvider />
- <MudContainer >
-	<MudGrid >
-
-		<MudItem md="6" xs="6" Class="ma-4" Style="background-color: white">
-			<MudText Typo="Typo.h5" GutterBottom="true">Shipping Information</MudText>
+ @rendermode @(new InteractiveServerRenderMode(prerender: false))
 
 
-			<MudItem xs="12" md="3">
-				<MudTextField Label="First Name" @bind-Value="Order.FirstName" Variant="Variant.Outlined" />
+<MudGrid >
+
+	<MudItem md="6" xs="12" Style="background-color: white">
+		<MudText Typo="Typo.h6" >Shipping address</MudText>
+		<MudGrid Style="padding-right: 2rem">
+
+			<MudItem xs="12" md="6">
+				<MudTextField Label="First Name" @bind-Value="Order.FirstName" Required="true" Variant="Variant.Outlined"
+				              RequiredError="First Name is required!"/>
 			</MudItem>
-			<MudItem xs="12" md="3">
-				<MudTextField Label="Last Name" @bind-Value="Order.LastName" Variant="Variant.Outlined" />
+			<MudItem xs="12" md="6">
+				<MudTextField Label="Last Name" @bind-Value="Order.LastName" Required="true" Variant="Variant.Outlined"
+				              RequiredError="Last Name is required!"/>
 			</MudItem>
 			<MudItem xs="12">
-				<MudTextField Label="Address" @bind-Value="Order.Address1" Variant="Variant.Outlined"  />
+				<MudTextField Label="Address" @bind-Value="Order.Address1" Required="true" Margin="Margin.Dense" Variant="Variant.Outlined"
+				              RequiredError="Address is required!" Lines="2"/>
 			</MudItem>
 			<MudItem xs="12">
-				<MudTextField Label="Apartment, suite. etc (optional)" @bind-Value="Order.Address2"  Variant="Variant.Outlined"  />
+				<MudTextField Label="Apartment, suite, etc. (optional)" @bind-Value="Order.Address2" Required="false" Variant="Variant.Outlined"/>
 			</MudItem>
-			<MudItem xs="12" md="3">
-				<MudTextField Label="City" @bind-Value="Order.City"  Variant="Variant.Outlined"  />
+			<MudItem xs="12" md="6">
+				<MudTextField Label="City" @bind-Value="Order.City" Required="true" RequiredError="City is required!" Variant="Variant.Outlined"/>
 			</MudItem>
-			<MudItem xs="12" md="3">
-				<MudTextField Label="Zip Code" @bind-Value="Order.ZipCode" Required="true" Variant="Variant.Outlined" HelperTextOnFocus="true" 
+			<MudItem xs="12" md="6">
+				<MudTextField Label="Zip Code" @bind-Value="Order.ZipCode" Required="true" Variant="Variant.Outlined"
 				              RequiredError="Zip Code is required!"/>
 			</MudItem>
 			<MudItem xs="12">
-				<MudTextField Label="Email" @bind-Value="Order.Email" Variant="Variant.Outlined" HelperTextOnFocus="true" ShrinkLabel
+				<MudTextField Label="Email" @bind-Value="Order.Email" Required="true" Variant="Variant.Outlined"
 				              RequiredError="Email is required!" InputType="InputType.Email"/>
 			</MudItem>
 			<MudItem xs="12">
-				<MudTextField Label="Phone Number" @bind-Value="Order.PhoneNumber" InputType="InputType.Telephone" Variant="Variant.Outlined" HelperTextOnFocus="true"  />
+				<MudTextField Label="Phone Number" @bind-Value="Order.PhoneNumber" InputType="InputType.Telephone" Variant="Variant.Outlined"/>
 			</MudItem>
+		</MudGrid>
 
+		<MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="PlaceOrder" Class="mb-4 mt-4">
+			Place Order
+		</MudButton>
+	</MudItem>
 
+	<MudItem md="6" xs="12">
+		<MudText Typo="Typo.h6" GutterBottom="true">Shopping Cart</MudText>
 
-			<MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="PlaceOrder" Class="mt-3">
-				Place Order
-			</MudButton>
-		 </MudItem>
-		 <MudItem md="5" xs="5">
-			 <MudText Typo="Typo.h5" GutterBottom="true">Shopping Cart</MudText>
-	
-			 @if (CartItems != null && CartItems.Any())
-			 {
-				 <MudTable Items="@CartItems" Hover="true" Breakpoint="Breakpoint.Sm" Elevation="1" Outlined="true">
-					 <HeaderContent>
-						 <MudTh>Product</MudTh>
-						 <MudTh>Quantity</MudTh>
-						 <MudTh>Price</MudTh>
-						 <MudTh>Total</MudTh>
-					 </HeaderContent>
-					 <RowTemplate>
-						 <MudTd DataLabel="Product">@context.ProductName</MudTd>
-						 <MudTd DataLabel="Quantity">@context.Quantity</MudTd>
-						 <MudTd DataLabel="Price">@context.Price</MudTd>
-						 <MudTd DataLabel="Total">@(context.Quantity * context.Price)</MudTd>
-					 </RowTemplate>
-					 <FooterContent>
+		@if (CartItems != null && CartItems.Any())
+		{
+			<MudTable Items="@CartItems" Hover="true" Breakpoint="Breakpoint.Sm" Elevation="1" Outlined="true" >
+				<HeaderContent>
+					<MudTh>Product</MudTh>
+					<MudTh>Quantity</MudTh>
+					<MudTh>Price</MudTh>
+					<MudTh>Total</MudTh>
+				</HeaderContent>
+				<RowTemplate>
+					<MudTd DataLabel="Product">@context.ProductName</MudTd>
+					<MudTd DataLabel="Quantity">@context.Quantity</MudTd>
+					<MudTd DataLabel="Price">@context.Price</MudTd>
+					<MudTd DataLabel="Total">@(context.Quantity * context.Price)</MudTd>
+				</RowTemplate>
+				<FooterContent>
+					<MudTh></MudTh>
+					<MudTh></MudTh>
+					<MudTh Style="font-weight: bold;">Total</MudTh>
+					<MudTh Class="ml-auto" Style="font-weight: bold;">$@CartItems.Sum(item => item.Quantity * item.Price)</MudTh>
+				</FooterContent>
+			</MudTable>
+		}
+		else
+		{
+			<MudText>Your cart is empty.</MudText>
+		}
+	</MudItem>
+</MudGrid>
 
-						 <MudTh></MudTh>
-						 <MudTh></MudTh>
-						 <MudTh Style="font-weight: bold;">Total</MudTh>
-						 <MudTh Class="ml-auto" Style="font-weight: bold;">$@CartItems.Sum(item => item.Quantity * item.Price)</MudTh>
-					 </FooterContent>
-				 </MudTable>
-			 }
-			 else
-			 {
-				 <MudText>Your cart is empty.</MudText>
-			 }
-		 </MudItem>
-	 </MudGrid>
- </MudContainer>
 
 
 @code {
@@ -121,4 +121,4 @@
 		Console.WriteLine($"Email: {Order.Email}");
 		Console.WriteLine($"Phone: {Order.PhoneNumber}");
 	}
- }
+}
