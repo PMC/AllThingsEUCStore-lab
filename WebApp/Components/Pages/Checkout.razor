@@ -2,46 +2,67 @@
  @rendermode @(new InteractiveServerRenderMode(prerender: false))
 
 
-<MudGrid >
+<MudGrid>
 
 	<MudItem md="6" xs="12" Style="background-color: white">
-		<MudText Typo="Typo.h6" >Shipping address</MudText>
+		<MudText Typo="Typo.h6">Shipping address</MudText>
 		<MudGrid Style="padding-right: 2rem">
 
 			<MudItem xs="12" md="6">
 				<MudTextField Label="First Name" @bind-Value="Order.FirstName" Required="true" Variant="Variant.Outlined"
-				              RequiredError="First Name is required!"/>
+							  RequiredError="First Name is required!" />
 			</MudItem>
 			<MudItem xs="12" md="6">
 				<MudTextField Label="Last Name" @bind-Value="Order.LastName" Required="true" Variant="Variant.Outlined"
-				              RequiredError="Last Name is required!"/>
+							  RequiredError="Last Name is required!" />
 			</MudItem>
 			<MudItem xs="12">
 				<MudTextField Label="Address" @bind-Value="Order.Address1" Required="true" Margin="Margin.Dense" Variant="Variant.Outlined"
-				              RequiredError="Address is required!" Lines="2"/>
+							  RequiredError="Address is required!" Lines="2" />
 			</MudItem>
 			<MudItem xs="12">
-				<MudTextField Label="Apartment, suite, etc. (optional)" @bind-Value="Order.Address2" Required="false" Variant="Variant.Outlined"/>
+				<MudTextField Label="Apartment, suite, etc. (optional)" @bind-Value="Order.Address2" Required="false" Variant="Variant.Outlined" Clearable />
 			</MudItem>
 			<MudItem xs="12" md="6">
-				<MudTextField Label="City" @bind-Value="Order.City" Required="true" RequiredError="City is required!" Variant="Variant.Outlined"/>
+				<MudTextField Label="City" @bind-Value="Order.City" Required="true" RequiredError="City is required!" Variant="Variant.Outlined" />
 			</MudItem>
 			<MudItem xs="12" md="6">
 				<MudTextField Label="Zip Code" @bind-Value="Order.ZipCode" Required="true" Variant="Variant.Outlined"
-				              RequiredError="Zip Code is required!"/>
+							  RequiredError="Zip Code is required!" />
 			</MudItem>
 			<MudItem xs="12">
 				<MudTextField Label="Email" @bind-Value="Order.Email" Required="true" Variant="Variant.Outlined"
-				              RequiredError="Email is required!" InputType="InputType.Email"/>
+							  RequiredError="Email is required!" InputType="InputType.Email" />
 			</MudItem>
 			<MudItem xs="12">
-				<MudTextField Label="Phone Number" @bind-Value="Order.PhoneNumber" InputType="InputType.Telephone" Variant="Variant.Outlined"/>
+				<MudTextField Label="Phone Number" @bind-Value="Order.PhoneNumber" InputType="InputType.Telephone" Variant="Variant.Outlined" />
 			</MudItem>
 		</MudGrid>
 
+
+		<MudText Typo="Typo.h6" Style="padding-top: 1rem">Payment</MudText>
+		<MudGrid Class="justify-space-between" Style="padding-right: 2rem">
+			<MudItem xs="12">
+				<MudTextField Mask="@(new PatternMask("0000 0000 0000 0000"))" Label="Card Number"
+							  @bind-Value="Order.CreditCard.CreditCard" Variant="@Variant.Outlined" Clearable />
+			</MudItem>
+			<MudItem xs="6">
+				<MudTextField Mask="@(new DateMask("MM/YY", 'Y', 'M'))" Label="Expiration date (MM / YY)"
+							  @bind-Value="Order.CreditCard.Expiration" Variant="@Variant.Outlined" />
+			</MudItem>
+			<MudItem xs="6">
+				<MudTextField Mask="@(new PatternMask("000"))" Label="CVC"
+							  @bind-Value="Order.CreditCard.CVC" Variant="@Variant.Outlined" />
+			</MudItem>
+			<MudItem xs="12">
+				<MudTextField Label="Name on card"
+							  @bind-Value="Order.CreditCard.Name" Variant="@Variant.Outlined" Clearable />
+			</MudItem>
+		</MudGrid>
 		<MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="PlaceOrder" Class="mb-4 mt-4">
 			Place Order
 		</MudButton>
+
 	</MudItem>
 
 	<MudItem md="6" xs="12">
@@ -49,7 +70,7 @@
 
 		@if (CartItems != null && CartItems.Any())
 		{
-			<MudTable Items="@CartItems" Hover="true" Breakpoint="Breakpoint.Sm" Elevation="1" Outlined="true" >
+			<MudTable Items="@CartItems" Hover="true" Breakpoint="Breakpoint.Sm" Elevation="1" Outlined="true">
 				<HeaderContent>
 					<MudTh>Product</MudTh>
 					<MudTh>Quantity</MudTh>
@@ -80,6 +101,14 @@
 
 
 @code {
+	public class CreditCardInfo
+	{
+		public string? CreditCard { get; set; }
+		public string? Expiration { get; set; }
+		public string? CVC { get; set; }
+		public string? Name { get; set; }
+	}
+
 	public class CartItem
 	{
 		public string? ProductName { get; set; }
@@ -98,15 +127,16 @@
 		public string? ZipCode { get; set; }
 		public string? Email { get; set; }
 		public string? PhoneNumber { get; set; }
+		public CreditCardInfo CreditCard { get; set; } = new CreditCardInfo();
 	}
 
 
 	private List<CartItem> CartItems = new List<CartItem>()
-  {
-  new CartItem { ProductName = "Product 1", Quantity = 2, Price = 10.00M },
-  new CartItem { ProductName = "Product 2", Quantity = 1, Price = 20.00M },
-  new CartItem { ProductName = "Product 3", Quantity = 3, Price = 5.00M }
-  };
+	{
+		new CartItem { ProductName = "Product 1", Quantity = 2, Price = 10.00M },
+		new CartItem { ProductName = "Product 2", Quantity = 1, Price = 20.00M },
+		new CartItem { ProductName = "Product 3", Quantity = 3, Price = 5.00M }
+	};
 
 
 	private OrderInfo Order = new OrderInfo();
@@ -114,6 +144,7 @@
 
 	private void PlaceOrder()
 	{
+
 		// TODO: Implement order placement logic here
 		Console.WriteLine("Order placed!");
 		Console.WriteLine($"Name: {Order.FirstName} {Order.LastName}");
