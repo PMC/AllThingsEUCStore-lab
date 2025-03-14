@@ -1,10 +1,15 @@
 ﻿@page "/ProductListAsCards"
+@rendermode @(new InteractiveServerRenderMode(prerender: false))
 @using StoreApi.Entities
 @inject HttpClient HttpClient
 @attribute [StreamRendering]
 <MudPopoverProvider />
 <MudDialogProvider />
 <MudSnackbarProvider />
+
+
+
+
 <MudContainer Class="py-4 py-sm-8 py-md-12 py-lg-16 py-xl-20">
 	<MudGrid Style="--icon-opacity: 0.1">
 		@foreach (Product product in ProductList)
@@ -13,7 +18,7 @@
 			var colorText = product.StockQuantity > 0 ? "Color: Green" : "Color: Red";
 
 			<MudItem xs="12" md="12" lg="12">
-				<MudCard Elevation="10">
+				<MudCard Elevation="10" >
 					<MudGrid>
 						<MudItem xs="12" sm="7" md="6" lg="4">
 							<MudCardMedia Image="default.jpg" Height="540" Style="margin: 1rem 1rem 1rem 1rem"/>
@@ -72,7 +77,7 @@
 </MudContainer>
 @code {
 	private string _searchString = "";
-	public IEnumerable<Product>? ProductList = new List<Product>();
+	public IEnumerable<Product> ProductList = new List<Product>();
 	private string? _serviceEndpoint;
 	protected override async Task OnInitializedAsync()
 	{
@@ -85,7 +90,52 @@
 	{
 		if (HttpClient != null) ProductList = await HttpClient.GetFromJsonAsync<List<Product>>(_serviceEndpoint);
 	}
+	/*
+	private IEnumerable<Product> FilteredProducts
+	{
+		get
+		{
+			IEnumerable<Product> query = ProductList;
 
+			if (!string.IsNullOrEmpty(SelectedBrand))
+			{
+				query = query.Where(p => p.Brand == SelectedBrand);
+				}
+
+			if (PriceRange != null)
+			{
+				var minPrice = PriceRange[0];
+				var maxPrice = PriceRange[1];
+
+				if (minPrice.HasValue)
+				{
+					query = query.Where(p => p.Price >= minPrice);
+					}
+
+				if (maxPrice.HasValue)
+				{
+					query = query.Where(p => p.Price <= maxPrice);
+					}
+				}
+
+			if (SelectedStockQuantity.HasValue)
+			{
+				query = query.Where(p => p.StockQuantity >= SelectedStockQuantity);
+				}
+
+			if (SelectedTireSize.HasValue)
+			{
+				query = query.Where(p => p.TireSize == SelectedTireSize);
+				}
+
+			if (SelectedHasSuspension.HasValue)
+			{
+				query = query.Where(p => p.HasSuspension == SelectedHasSuspension);
+				}
+			return query;
+			}
+		}
+		*/
 	// quick filter - filter globally across multiple columns with the same input
 	private Func<Product, bool> _quickFilter => x =>
 	{
