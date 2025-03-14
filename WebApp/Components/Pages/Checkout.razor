@@ -1,4 +1,5 @@
 ﻿ @page "/checkout"
+@using WebApp.Entities
  @rendermode @(new InteractiveServerRenderMode(prerender: false))
 
 
@@ -105,46 +106,13 @@
 
 
 @code {
-	public class CreditCardInfo
-	{
-		public string? CreditCard { get; set; }
-		public string? Expiration { get; set; }
-		public string? CVC { get; set; }
-		public string? Name { get; set; }
-	}
-
-	public class CartItem
-	{
-		public string? ProductName { get; set; }
-		public int Quantity { get; set; }
-		public decimal Price { get; set; }
-	}
-
-
-	public class OrderInfo
-	{
-		public string? FirstName { get; set; }
-		public string? LastName { get; set; }
-		public string? Address1 { get; set; }
-		public string? Address2 { get; set; }
-		public string? City { get; set; }
-		public string? ZipCode { get; set; }
-		public string? Email { get; set; }
-		public string? PhoneNumber { get; set; }
-		public CreditCardInfo CreditCard { get; set; } = new CreditCardInfo();
-	}
-
-
 	private List<CartItem> CartItems = new List<CartItem>()
 	{
 		new CartItem { ProductName = "Product 1", Quantity = 2, Price = 10.00M },
 		new CartItem { ProductName = "Product 2", Quantity = 1, Price = 20.00M },
 		new CartItem { ProductName = "Product 3", Quantity = 3, Price = 5.00M }
 	};
-
-
-	private OrderInfo Order = new OrderInfo();
-
+	private OrderInfo Order = new();
 
 	private void PlaceOrder()
 	{
