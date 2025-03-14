@@ -70,7 +70,7 @@
 
 		@if (CartItems != null && CartItems.Any())
 		{
-			<MudTable Items="@CartItems" Hover="true" Breakpoint="Breakpoint.Sm" Elevation="1" Outlined="true">
+			<MudTable Items="@CartItems" Hover="true" Breakpoint="Breakpoint.Sm" Elevation="1" Outlined="true" FixedHeader="true">
 				<HeaderContent>
 					<MudTh>Product</MudTh>
 					<MudTh>Quantity</MudTh>
@@ -83,13 +83,17 @@
 					<MudTd DataLabel="Price">@context.Price</MudTd>
 					<MudTd DataLabel="Total">@(context.Quantity * context.Price)</MudTd>
 				</RowTemplate>
-				<FooterContent>
-					<MudTh></MudTh>
-					<MudTh></MudTh>
-					<MudTh Style="font-weight: bold;">Total</MudTh>
-					<MudTh Class="ml-auto" Style="font-weight: bold;">$@CartItems.Sum(item => item.Quantity * item.Price)</MudTh>
-				</FooterContent>
 			</MudTable>
+
+			<MudGrid Style="padding-top: 2rem;padding-left: 1rem;padding-right: 1rem">
+				<MudItem xs="6">
+					<MudText GutterBottom="true" Style="font-weight: bold;">Order Total: </MudText>
+				</MudItem>
+
+				<MudItem xs="6" >
+					<MudText Align="Align.Right" GutterBottom="true" Style="font-weight: bold;">@CartItems.Sum(item => item.Quantity * item.Price) SEK</MudText>
+				</MudItem>
+			</MudGrid>
 		}
 		else
 		{
