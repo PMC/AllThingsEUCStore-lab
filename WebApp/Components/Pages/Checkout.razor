@@ -7,36 +7,36 @@
 
 	<MudItem md="6" xs="12" Style="background-color: white">
 		<MudText Typo="Typo.h6">Shipping address</MudText>
-		<MudGrid Style="padding-right: 2rem" >
+		<MudGrid Style="padding-right: 2rem">
 
 			<MudItem xs="12" md="6">
-				<MudTextField Label="First Name" @bind-Value="Order.FirstName" Required="true" Variant="Variant.Outlined"
+				<MudTextField Label="First Name" @bind-Value="_order.FirstName" Required="true" Variant="Variant.Outlined"
 							  RequiredError="First Name is required!" />
 			</MudItem>
 			<MudItem xs="12" md="6">
-				<MudTextField Label="Last Name" @bind-Value="Order.LastName" Required="true" Variant="Variant.Outlined"
+				<MudTextField Label="Last Name" @bind-Value="_order.LastName" Required="true" Variant="Variant.Outlined"
 							  RequiredError="Last Name is required!" />
 			</MudItem>
 			<MudItem xs="12">
-				<MudTextField Label="Address" @bind-Value="Order.Address1" Required="true" Margin="Margin.Dense" Variant="Variant.Outlined"
+				<MudTextField Label="Address" @bind-Value="_order.Address1" Required="true" Margin="Margin.Dense" Variant="Variant.Outlined"
 							  RequiredError="Address is required!" Lines="2" />
 			</MudItem>
 			<MudItem xs="12">
-				<MudTextField Label="Apartment, suite, etc. (optional)" @bind-Value="Order.Address2" Required="false" Variant="Variant.Outlined" Clearable />
+				<MudTextField Label="Apartment, suite, etc. (optional)" @bind-Value="_order.Address2" Required="false" Variant="Variant.Outlined" Clearable />
 			</MudItem>
 			<MudItem xs="12" md="6">
-				<MudTextField Label="City" @bind-Value="Order.City" Required="true" RequiredError="City is required!" Variant="Variant.Outlined" />
+				<MudTextField Label="City" @bind-Value="_order.City" Required="true" RequiredError="City is required!" Variant="Variant.Outlined" />
 			</MudItem>
 			<MudItem xs="12" md="6">
-				<MudTextField Label="Zip Code" @bind-Value="Order.ZipCode" Required="true" Variant="Variant.Outlined"
+				<MudTextField Label="Zip Code" @bind-Value="_order.ZipCode" Required="true" Variant="Variant.Outlined"
 							  RequiredError="Zip Code is required!" />
 			</MudItem>
 			<MudItem xs="12">
-				<MudTextField Label="Email" @bind-Value="Order.Email" Required="true" Variant="Variant.Outlined"
+				<MudTextField Label="Email" @bind-Value="_order.Email" Required="true" Variant="Variant.Outlined"
 							  RequiredError="Email is required!" InputType="InputType.Email" />
 			</MudItem>
 			<MudItem xs="12">
-				<MudTextField Label="Phone Number" @bind-Value="Order.PhoneNumber" InputType="InputType.Telephone" Variant="Variant.Outlined" />
+				<MudTextField Label="Phone Number" @bind-Value="_order.PhoneNumber" InputType="InputType.Telephone" Variant="Variant.Outlined" />
 			</MudItem>
 		</MudGrid>
 
@@ -45,19 +45,19 @@
 		<MudGrid Class="justify-space-between" Style="padding-right: 2rem">
 			<MudItem xs="12">
 				<MudTextField Mask="@(new PatternMask("0000 0000 0000 0000"))" Label="Card Number"
-							  @bind-Value="Order.CreditCard.CreditCard" Variant="@Variant.Outlined" Clearable />
+							  @bind-Value="_order.CreditCard.CreditCard" Variant="@Variant.Outlined" Clearable />
 			</MudItem>
 			<MudItem xs="6">
-				<MudTextField Mask="@(new DateMask("MM/YY", 'Y', 'M'))" Label="Expiration date (MM / YY)" 
-							  @bind-Value="Order.CreditCard.Expiration" Variant="@Variant.Outlined" />
+				<MudTextField Mask="@(new DateMask("MM/YY", 'Y', 'M'))" Label="Expiration date (MM / YY)"
+							  @bind-Value="_order.CreditCard.Expiration" Variant="@Variant.Outlined" />
 			</MudItem>
 			<MudItem xs="6">
 				<MudTextField Mask="@(new PatternMask("000"))" Label="CVC"
-							  @bind-Value="Order.CreditCard.CVC" Variant="@Variant.Outlined" />
+							  @bind-Value="_order.CreditCard.CVC" Variant="@Variant.Outlined" />
 			</MudItem>
 			<MudItem xs="12">
 				<MudTextField Label="Name on card"
-							  @bind-Value="Order.CreditCard.Name" Variant="@Variant.Outlined" Clearable />
+							  @bind-Value="_order.CreditCard.Name" Variant="@Variant.Outlined" Clearable />
 			</MudItem>
 		</MudGrid>
 		<MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="PlaceOrder" Class="mb-4 mt-4">
@@ -69,9 +69,9 @@
 	<MudItem md="6" xs="12">
 		<MudText Typo="Typo.h6" GutterBottom="true">Shopping Cart</MudText>
 
-		@if (CartItems != null && CartItems.Any())
+		@if (_cartItems != null && _cartItems.Any())
 		{
-			<MudTable Items="@CartItems" Hover="true" Breakpoint="Breakpoint.Sm" Elevation="1" Outlined="true" FixedHeader="true">
+			<MudTable Items="@_cartItems" Hover="true" Breakpoint="Breakpoint.Sm" Elevation="1" Outlined="true" FixedHeader="true">
 				<HeaderContent>
 					<MudTh>Product</MudTh>
 					<MudTh>Quantity</MudTh>
@@ -91,8 +91,8 @@
 					<MudText GutterBottom="true" Style="font-weight: bold;">Order Total: </MudText>
 				</MudItem>
 
-				<MudItem xs="6" >
-					<MudText Align="Align.Right" GutterBottom="true" Style="font-weight: bold;">@CartItems.Sum(item => item.Quantity * item.Price) SEK</MudText>
+				<MudItem xs="6">
+					<MudText Align="Align.Right" GutterBottom="true" Style="font-weight: bold;">@_cartItems.Sum(item => item.Quantity * item.Price) SEK</MudText>
 				</MudItem>
 			</MudGrid>
 		}
@@ -106,22 +106,22 @@
 
 
 @code {
-	private List<CartItem> CartItems = new List<CartItem>()
+	private List<CartItem> _cartItems = new()
 	{
 		new CartItem { ProductName = "Product 1", Quantity = 2, Price = 10.00M },
 		new CartItem { ProductName = "Product 2", Quantity = 1, Price = 20.00M },
 		new CartItem { ProductName = "Product 3", Quantity = 3, Price = 5.00M }
 	};
-	private OrderInfo Order = new();
+	private OrderInfo _order = new();
 
 	private void PlaceOrder()
 	{
 
 		// TODO: Implement order placement logic here
 		Console.WriteLine("Order placed!");
-		Console.WriteLine($"Name: {Order.FirstName} {Order.LastName}");
-		Console.WriteLine($"Address: {Order.Address1},{Order.Address2}, {Order.City}, {Order.ZipCode}");
-		Console.WriteLine($"Email: {Order.Email}");
-		Console.WriteLine($"Phone: {Order.PhoneNumber}");
+		Console.WriteLine($"Name: {_order.FirstName} {_order.LastName}");
+		Console.WriteLine($"Address: {_order.Address1},{_order.Address2}, {_order.City}, {_order.ZipCode}");
+		Console.WriteLine($"Email: {_order.Email}");
+		Console.WriteLine($"Phone: {_order.PhoneNumber}");
 	}
 }
