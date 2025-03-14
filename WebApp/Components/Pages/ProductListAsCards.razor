@@ -8,99 +8,112 @@
 <MudPopoverProvider />
 <MudDialogProvider />
 <MudSnackbarProvider />
+<MudBreakpointProvider>
+	
+	<MudHidden Breakpoint="Breakpoint.MdAndDown" Invert="true">
+		<MudGrid >
+		
+			<MudToolBar >
+				<MudButton Variant="Variant.Filled" StartIcon="@Icons.Material.Filled.FilterAlt" Color="Color.Secondary">Filter</MudButton>
 
-<div class="d-flex flex-grow-1 gap-4">
-	<MudExpansionPanels MultiExpansion="true" Class="flex-grow-0" Elevation="1">
+			</MudToolBar>
+	
+		</MudGrid>
+	</MudHidden>
+	<div class="d-flex flex-grow-1 gap-4">
+		<MudHidden Breakpoint="Breakpoint.MdAndDown">
+			<MudExpansionPanels MultiExpansion="true" Class="flex-grow-0" Elevation="1">
 
-		<MudExpansionPanel Text="Brand" Expanded="true">
-			@foreach (var brand in AvailableBrands)
+				<MudExpansionPanel Text="Brand" Expanded="true">
+					@foreach (var brand in AvailableBrands)
+					{
+						<MudCheckBox T="bool" Label="@brand" Checked="@BrandFilters[brand]" ValueChanged="((bool value) => OnBrandFilterChanged(brand, value))" Dense="true"/>
+					}
+				</MudExpansionPanel>
+
+				<MudExpansionPanel Text="Tire Size" Expanded="true">
+					@foreach (var tireSize in AvailableTireSizes)
+					{
+						<MudCheckBox T="bool" Label="@tireSize.ToString()" Checked="@TireSizeFilters[tireSize]" ValueChanged="((bool value) => OnTireSizeFilterChanged(tireSize, value))" Dense="true"/>
+					}
+				</MudExpansionPanel>
+				<MudExpansionPanel Text="Suspension" Expanded="true">
+					@foreach (var data in _suspensionFilters.Keys.ToList())
+					{
+						<MudCheckBox T="bool" Label="@data" Checked="@_suspensionFilters[data]" ValueChanged="((bool value) => OnSuspensionFilterChanged(data, value))" Dense="true"/>
+					}
+				</MudExpansionPanel>
+
+			</MudExpansionPanels>
+		</MudHidden>
+
+
+		<div class="flex-grow-1">
+			@foreach (Product product in FilteredProducts)
 			{
-				<MudCheckBox T="bool" Label="@brand" Checked="@BrandFilters[brand]" ValueChanged="((bool value) => OnBrandFilterChanged(brand, value))" Dense="true" />
+				var stockText = product.StockQuantity > 0 ? "In Stock" : "Out of Stock";
+				var colorText = product.StockQuantity > 0 ? "Color: Green" : "Color: Red";
+
+
+				<MudCard Elevation="10" Class="mb-6">
+					<MudGrid>
+						<MudItem xs="12" sm="7" md="6" lg="4">
+							<MudCardMedia Image="default.jpg" Height="540" Style="margin: 1rem 1rem 1rem 1rem"/>
+						</MudItem>
+						<MudItem xs="12" sm="5" md="6" lg="8">
+							<MudCardContent>
+								<MudText Typo="Typo.subtitle2">@product.Brand</MudText>
+								<MudText Typo="Typo.h4">@product.ProductName</MudText>
+
+								<MudText Typo="Typo.subtitle2" Style=@colorText>Availability: @stockText</MudText>
+
+								<MudText Typo="Typo.subtitle2" Class="mt-1">Description </MudText>
+								<MudText Typo="Typo.body2" Style="word-wrap: break-word; white-space: pre-line">
+									@product.Description
+								</MudText>
+								<MudGrid>
+									<MudItem>
+										<MudIcon Icon="@Icons.Material.Filled.TireRepair" Style="font-size: 4rem; align-content: center">Tire Size</MudIcon>
+										<MudText Align="Align.Center" Typo="Typo.body2">Tire Size</MudText>
+										<MudText Align="Align.Center" Typo="Typo.h6">@product.TireSize"</MudText>
+									</MudItem>
+									<MudItem>
+										<MudIcon Icon="@Icons.Material.Filled.Speed" Style="font-size: 4rem;">Speed</MudIcon>
+										<MudText Align="Align.Center" Typo="Typo.body2">Max Speed</MudText>
+										<MudText Align="Align.Center" Typo="Typo.h6">@product.MaxSpeed km/h</MudText>
+									</MudItem>
+									<MudItem>
+										<MudIcon Icon="@Icons.Material.Filled.Map" Style="font-size: 4rem;">Range</MudIcon>
+										<MudText Align="Align.Center" Typo="Typo.body2">Max Range</MudText>
+										<MudText Align="Align.Center" Typo="Typo.h6">@product.MaxRange km</MudText>
+									</MudItem>
+									<MudItem>
+										<MudIcon Icon="@Icons.Material.Filled.CleanHands" Style="font-size: 4rem;">Weight</MudIcon>
+										<MudText Align="Align.Center" Typo="Typo.body2">Weight</MudText>
+										<MudText Align="Align.Center" Typo="Typo.h6">@product.Weight kg</MudText>
+									</MudItem>
+									<MudItem>
+										<MudIcon Icon="@Icons.Material.Filled.BatteryChargingFull" Style="font-size: 4rem;">Battery</MudIcon>
+										<MudText Align="Align.Center" Typo="Typo.body2">Battery</MudText>
+										<MudText Align="Align.Center" Typo="Typo.h6">@product.BatteryCapacity Wh</MudText>
+									</MudItem>
+									<MudItem>
+										<MudIcon Icon="@Icons.Material.Filled.AlignHorizontalCenter" Style="font-size: 4rem;">Suspension</MudIcon>
+										<MudText Align="Align.Center" Typo="Typo.body2">Suspension</MudText>
+										<MudText Align="Align.Center" Typo="Typo.h6">@product.HasSuspension</MudText>
+									</MudItem>
+								</MudGrid>
+								<MudButton Variant="Variant.Filled" Color="Color.Primary" Class="mt-4">Learn More</MudButton>
+							</MudCardContent>
+						</MudItem>
+					</MudGrid>
+				</MudCard>
+
 			}
-		</MudExpansionPanel>
 
-		<MudExpansionPanel Text="Tire Size" Expanded="true">
-			@foreach (var tireSize in AvailableTireSizes)
-			{
-				<MudCheckBox T="bool" Label="@tireSize.ToString()" Checked="@TireSizeFilters[tireSize]" ValueChanged="((bool value) => OnTireSizeFilterChanged(tireSize, value))" Dense="true" />
-			}
-		</MudExpansionPanel>
-		<MudExpansionPanel Text="Suspension" Expanded="true">
-			@foreach (var data in _suspensionFilters.Keys.ToList())
-			{
-				<MudCheckBox T="bool" Label="@data" Checked="@_suspensionFilters[data]" ValueChanged="((bool value) => OnSuspensionFilterChanged(data, value))" Dense="true" />
-			}
-		</MudExpansionPanel>
-
-	</MudExpansionPanels>
-
-
-	<div class="flex-grow-1">
-		@foreach (Product product in FilteredProducts)
-		{
-			var stockText = product.StockQuantity > 0 ? "In Stock" : "Out of Stock";
-			var colorText = product.StockQuantity > 0 ? "Color: Green" : "Color: Red";
-
-
-			<MudCard Elevation="10" Class="mb-6">
-				<MudGrid>
-					<MudItem xs="12" sm="7" md="6" lg="4">
-						<MudCardMedia Image="default.jpg" Height="540" Style="margin: 1rem 1rem 1rem 1rem" />
-					</MudItem>
-					<MudItem xs="12" sm="5" md="6" lg="8">
-						<MudCardContent>
-							<MudText Typo="Typo.subtitle2">@product.Brand</MudText>
-							<MudText Typo="Typo.h4">@product.ProductName</MudText>
-
-							<MudText Typo="Typo.subtitle2" Style=@colorText>Availability: @stockText</MudText>
-
-							<MudText Typo="Typo.subtitle2" Class="mt-1">Description </MudText>
-							<MudText Typo="Typo.body2" Style="word-wrap: break-word;white-space: pre-line">
-								@product.Description
-							</MudText>
-							<MudGrid>
-								<MudItem>
-									<MudIcon Icon="@Icons.Material.Filled.TireRepair" Style="font-size: 4rem;align-content: center">Tire Size</MudIcon>
-									<MudText Align="Align.Center" Typo="Typo.body2">Tire Size</MudText>
-									<MudText Align="Align.Center" Typo="Typo.h6">@product.TireSize"</MudText>
-								</MudItem>
-								<MudItem>
-									<MudIcon Icon="@Icons.Material.Filled.Speed" Style="font-size: 4rem;">Speed</MudIcon>
-									<MudText Align="Align.Center" Typo="Typo.body2">Max Speed</MudText>
-									<MudText Align="Align.Center" Typo="Typo.h6">@product.MaxSpeed km/h</MudText>
-								</MudItem>
-								<MudItem>
-									<MudIcon Icon="@Icons.Material.Filled.Map" Style="font-size: 4rem;">Range</MudIcon>
-									<MudText Align="Align.Center" Typo="Typo.body2">Max Range</MudText>
-									<MudText Align="Align.Center" Typo="Typo.h6">@product.MaxRange km</MudText>
-								</MudItem>
-								<MudItem>
-									<MudIcon Icon="@Icons.Material.Filled.CleanHands" Style="font-size: 4rem;">Weight</MudIcon>
-									<MudText Align="Align.Center" Typo="Typo.body2">Weight</MudText>
-									<MudText Align="Align.Center" Typo="Typo.h6">@product.Weight kg</MudText>
-								</MudItem>
-								<MudItem>
-									<MudIcon Icon="@Icons.Material.Filled.BatteryChargingFull" Style="font-size: 4rem;">Battery</MudIcon>
-									<MudText Align="Align.Center" Typo="Typo.body2">Battery</MudText>
-									<MudText Align="Align.Center" Typo="Typo.h6">@product.BatteryCapacity Wh</MudText>
-								</MudItem>
-								<MudItem>
-									<MudIcon Icon="@Icons.Material.Filled.AlignHorizontalCenter" Style="font-size: 4rem;">Suspension</MudIcon>
-									<MudText Align="Align.Center" Typo="Typo.body2">Suspension</MudText>
-									<MudText Align="Align.Center" Typo="Typo.h6">@product.HasSuspension</MudText>
-								</MudItem>
-							</MudGrid>
-							<MudButton Variant="Variant.Filled" Color="Color.Primary" Class="mt-4">Learn More</MudButton>
-						</MudCardContent>
-					</MudItem>
-				</MudGrid>
-			</MudCard>
-
-		}
-
+		</div>
 	</div>
-</div>
-
+</MudBreakpointProvider>
 
 @code {
 	public IEnumerable<Product> ProductList = new List<Product>();
