@@ -6,7 +6,7 @@
 
 	<MudItem md="6" xs="12" Style="background-color: white">
 		<MudText Typo="Typo.h6">Shipping address</MudText>
-		<MudGrid Style="padding-right: 2rem">
+		<MudGrid Style="padding-right: 2rem" >
 
 			<MudItem xs="12" md="6">
 				<MudTextField Label="First Name" @bind-Value="Order.FirstName" Required="true" Variant="Variant.Outlined"
@@ -47,7 +47,7 @@
 							  @bind-Value="Order.CreditCard.CreditCard" Variant="@Variant.Outlined" Clearable />
 			</MudItem>
 			<MudItem xs="6">
-				<MudTextField Mask="@(new DateMask("MM/YY", 'Y', 'M'))" Label="Expiration date (MM / YY)"
+				<MudTextField Mask="@(new DateMask("MM/YY", 'Y', 'M'))" Label="Expiration date (MM / YY)" 
 							  @bind-Value="Order.CreditCard.Expiration" Variant="@Variant.Outlined" />
 			</MudItem>
 			<MudItem xs="6">
