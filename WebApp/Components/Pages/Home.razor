@@ -53,7 +53,11 @@
 	           Disabled=@disabled>
 		GitHub Link
 	</MudButton>
-	
+<MudFab Color="Color.Primary" StartIcon="@Icons.Material.Filled.Add" />
+<MudFab Color="Color.Secondary" StartIcon="@Icons.Material.Filled.Edit" />
+<MudFab Color="Color.Tertiary" StartIcon="@Icons.Material.Filled.ShoppingCart" DropShadow="false" />
+<MudFab StartIcon="@Icons.Material.Filled.Bookmark" Label="Bookmark" />
+<MudFab StartIcon="@Icons.Material.Filled.Save" Disabled="true" />
 
 <br />
 <MudPaper Height="200px" Class="mud-theme-primary" Style="overflow:hidden; position:relative;">
@@ -83,6 +87,7 @@
 			<MudButton Color="Color.Inherit" OnClick="@ToggleEndDrawer" EndIcon="@(Rtl ? Icons.Material.Filled.West : Icons.Material.Filled.East)" Class="mx-2">Toggle end</MudButton>
 		</div>
 	</MudDrawerContainer>
+
 </MudPaper>
 
 @code
