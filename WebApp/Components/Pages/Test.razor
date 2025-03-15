@@ -6,9 +6,7 @@
 @using StoreApi.Entities
 @inject HttpClient HttpClient
 @attribute [StreamRendering]
-<MudPopoverProvider />
-<MudDialogProvider />
-<MudSnackbarProvider />
+
 <MudBreakpointProvider>
 
 	<MudHidden Breakpoint="Breakpoint.MdAndDown" Invert="true">
@@ -120,10 +118,18 @@
 
 		</div>
 	</div>
+	<div class="d-flex flex-column align-center">
+		<MudPagination Size="Size.Medium" SelectedChanged="PageChanged" Count="@(FilteredProducts.Count)" Color="Color.Secondary" Class="pa-4"/>
+	</div>
 
 </MudBreakpointProvider>
 
 @code {
+
+	private void PageChanged(int i)
+	{
+		Console.WriteLine("page: " + i);
+	}
 	public bool ExpandOnClick = true;
 	public IEnumerable<Product> ProductList = new List<Product>();
 	private List<Product> FilteredProducts = new();

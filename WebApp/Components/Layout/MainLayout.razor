@@ -3,6 +3,8 @@
 
 <MudThemeProvider IsDarkMode="IsDarkMode" DefaultScrollbar="true" Theme="_myCustomTheme" />
 
+
+
 <MudLayout>
 	<MudAppBar Elevation="10">
 		<MudStaticNavDrawerToggle DrawerId="nav-drawer" Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start" />
@@ -17,6 +19,9 @@
 		@Body
 	</MudMainContent>
 </MudLayout>
+
+<MudDialogProvider />
+<MudSnackbarProvider />
 
 
 <div id="blazor-error-ui" data-nosnippet>

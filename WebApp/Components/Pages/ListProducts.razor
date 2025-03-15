@@ -5,9 +5,10 @@
 @inject HttpClient HttpClient
 @inject IDialogService DialogService
 @inject ISnackbar Snackbar
-<MudPopoverProvider />
-<MudDialogProvider FullWidth="true" MaxWidth="MaxWidth.Small"/>
+
+<MudDialogProvider FullWidth="true" MaxWidth="MaxWidth.Small" />
 <MudSnackbarProvider />
+<MudPopoverProvider />
 
 <MudDataGrid T="@Product" Items="@ProductList" Hover="true" Groupable="true" Dense="true"
 MultiSelection="false" Filterable="true"

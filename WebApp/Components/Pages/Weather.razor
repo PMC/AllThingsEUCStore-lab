@@ -1,13 +1,10 @@
 ﻿@page "/weather"
 @rendermode @(new InteractiveServerRenderMode(prerender: false))
-
+@attribute [StreamRendering]
+@inject IDialogService DialogService
+@inject ISnackbar Snackbar
 
 <MudPopoverProvider />
-<MudDialogProvider />
-<MudSnackbarProvider />
-
-@attribute [StreamRendering]
-
 <PageTitle>Weather</PageTitle>
 
 <MudText Typo="Typo.h3" GutterBottom="true">Weather forecast</MudText>
