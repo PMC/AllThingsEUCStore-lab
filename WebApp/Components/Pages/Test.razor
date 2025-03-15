@@ -18,7 +18,7 @@
 	</MudStack>
 	<MudStack Class="d-flex flex-grow-1 gap-4" Breakpoint="Breakpoint.MdAndUp" StretchItems="StretchItems.End">
 		<MudPaper Class="flex-auto px-0 pl-2 pb-2"  MinWidth="13rem" Elevation="10">
-			<MudCollapse @ref="TreeView" Expanded="_expandedFilter">
+			<MudCollapse @ref="TreeView" Expanded="_expandedFilter" >
 			<MudTreeView T="string" Hover ExpandOnClick="@ExpandOnClick" SelectionMode="SelectionMode.ToggleSelection" Color="Color.Info">
 
 				<MudTreeViewItem Text="Brand" Expanded TextTypo="Typo.button" EndIcon="@Icons.Material.Filled.Label" EndIconColor="Color.Info">
@@ -120,7 +120,9 @@
 		<MudPagination ShowLastButton="true" Size=" Size.Medium" SelectedChanged="PageChanged" Count="@_totalPages" Color="Color.Secondary" Class="pa-4" />
 
 	</div>
-
+	<MudScrollToTop>
+		<MudFab Color="Color.Secondary" StartIcon="@Icons.Material.Filled.KeyboardArrowUp" />
+	</MudScrollToTop>
 </MudBreakpointProvider>
 
 @code {
