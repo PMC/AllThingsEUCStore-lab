@@ -48,13 +48,15 @@
 					</MudTreeViewItem>
 
 				</MudTreeView>
-			</div>
-		</MudHidden>
+				<MudText Typo="Typo.button">Filtered Products: @FilteredProducts.Count</MudText>
+			
+				</div>
+			</MudHidden>
 
 
 
-		<div class="flex-grow-1">
-			@foreach (Product product in FilteredProducts)
+			<div class="flex-grow-1">
+				@foreach (Product product in _paginatedProducts)
 			{
 				var stockText = product.StockQuantity > 0 ? "In Stock" : "Out of Stock";
 				var colorText = product.StockQuantity > 0 ? "Color: Green" : "Color: Red";
@@ -119,20 +121,25 @@
 		</div>
 	</div>
 	<div class="d-flex flex-column align-center">
-		<MudPagination Size="Size.Medium" SelectedChanged="PageChanged" Count="@(FilteredProducts.Count)" Color="Color.Secondary" Class="pa-4"/>
+
+		<MudPagination ShowLastButton="true" Size=" Size.Medium" SelectedChanged="PageChanged" Count="@_totalPages" Color="Color.Secondary" Class="pa-4" />
+
 	</div>
 
 </MudBreakpointProvider>
 
 @code {
+	private int _currentPage = 1;
+	private int _pageSize = 5;
+	private int _totalPages => (int)Math.Ceiling((double)FilteredProducts.Count / _pageSize);
 
-	private void PageChanged(int i)
-	{
-		Console.WriteLine("page: " + i);
-	}
-	public bool ExpandOnClick = true;
 	public IEnumerable<Product> ProductList = new List<Product>();
 	private List<Product> FilteredProducts = new();
+
+	private IEnumerable<Product> _paginatedProducts => FilteredProducts.Skip((_currentPage - 1) * _pageSize)
+		.Take(_pageSize);
+
+	public bool ExpandOnClick = true;
 	private string? _serviceEndpoint;
 	private Dictionary<string, bool?> BrandFilters = new();
 	private Dictionary<int, bool?> TireSizeFilters = new();
@@ -169,6 +176,11 @@
 		_suspensionFilters.Add("YES", false);
 		_suspensionFilters.Add("NO", false);
 		ApplyFilters();
+	}
+
+	private void PageChanged(int i)
+	{
+		_currentPage = i;
 	}
 
 	private void ApplyFilters()
