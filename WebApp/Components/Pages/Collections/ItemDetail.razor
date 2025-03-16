@@ -8,16 +8,43 @@
 
 <h3>Item Details</h3>
 Item ID =@ItemId
+
+
+
+<MudPaper Class="pa-4">
+	<MudText Typo="Typo.h4">Product Details</MudText>
+
+	@if (_product != null)
+	{
+		<MudText Typo="Typo.h6">@_product.ProductName</MudText>
+		<MudText>Brand: @_product.Brand</MudText>
+		<MudText>Price: @_product.Price</MudText>
+		<MudText>Description: @_product.Description</MudText>
+		<MudImage Src="@_product.ImageUrl" Alt="@_product.ProductName" Height="300" Class="my-4" />
+		//display all other product properties.
+	}
+	else
+	{
+		<MudText>Product not found.</MudText>
+	}
+</MudPaper>
+
 @code {
-	
 	[Parameter]
 	public int ItemId { get; set; }
 
 	[CascadingParameter]
 	public HttpContext? HttpContext { get; set; }
 
-	protected override async Task OnInitializedAsync()
+	private Product _product;
+
+	protected override void OnParametersSet()
 	{
-		return;
+		_product = GetProductById(ItemId);
+	}
+	private Product GetProductById(int id)
+	{
+		// Replace this with your actual logic to fetch the product by ID
+		return new Product(){ProductName = "te"};
 	}
 }
