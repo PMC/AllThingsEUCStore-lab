@@ -1,0 +1,23 @@
+﻿@page "/store/collections/electric-unicycles/item/{itemId:int}"
+@rendermode @(new InteractiveServerRenderMode(prerender: false))
+@using System.Collections.Generic
+@using System.Linq
+@using StoreApi.Entities
+
+@attribute [StreamRendering]
+
+<h3>Item Details</h3>
+Item ID =@ItemId
+@code {
+	
+	[Parameter]
+	public int ItemId { get; set; }
+
+	[CascadingParameter]
+	public HttpContext? HttpContext { get; set; }
+
+	protected override async Task OnInitializedAsync()
+	{
+		return;
+	}
+}
