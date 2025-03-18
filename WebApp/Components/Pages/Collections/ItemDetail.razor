@@ -5,9 +5,14 @@
 @using System.Net.Http.Headers;
 @using Microsoft.AspNetCore.Http.HttpResults
 @using StoreApi.Entities
+@using WebApp.Entities
+@using WebApp.Services.CartService
 @inject NavigationManager NavigationManager
 @inject HttpClient HttpClient
-
+@inject ICartService CartService
+<MudPopoverProvider />
+<MudDialogProvider />
+<MudSnackbarProvider />
 <MudContainer>
 
 
@@ -40,7 +45,7 @@
 							<MudIconButton Icon="@Icons.Material.Outlined.Add" Variant="Variant.Filled" Color="Color.Success" OnClick="OnQuantityAdd" />
 						</MudStack>
 						<br />
-						<MudButton Variant="Variant.Filled" Size="Size.Large" Color="Color.Info">ADD TO CART</MudButton>
+						<MudButton Variant="Variant.Filled" Size="Size.Large" Color="Color.Info" OnClick="OnAddToCartClick">ADD TO CART</MudButton>
 
 
 					</MudCardContent>
@@ -158,4 +163,21 @@
 		}
 
 	}
+
+	private void OnAddToCartClick()
+	{
+		if (_product !=null)
+		{
+		var item = new CartItem()
+			{
+				ProductName = _product.ProductName,
+				ProductId = _product.ProductId,
+					Price = _product.Price.GetValueOrDefault(),
+				Quantity = _quantity,
+				ImageUrl = _product.ImageUrl
+			};
+		CartService.AddToCart(item);
+		}
+	}
+
 }

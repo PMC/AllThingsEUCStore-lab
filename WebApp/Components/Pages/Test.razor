@@ -4,256 +4,33 @@
 @using System.Collections.Generic
 @using System.Linq
 @using StoreApi.Entities
+@using WebApp.Entities
+@using WebApp.Services.CartService
 @inject HttpClient HttpClient
-@attribute [StreamRendering]
+@inject ICartService CartService
 
-<MudBreakpointProvider>
-
-	<MudStack >
-		<MudItem xs="12"><MudText Typo="Typo.h6">ELECTRIC UNICYCLES</MudText></MudItem>
-		<MudToolBar>
-			<MudButton Variant="Variant.Filled" OnClick="ShowFilters" StartIcon="@Icons.Material.Filled.FilterAlt" Color="Color.Secondary" Size="Size.Small">Filter</MudButton>
-		</MudToolBar>
-
-	</MudStack>
-	<MudStack Class="d-flex flex-grow-1 gap-4" Breakpoint="Breakpoint.MdAndUp" StretchItems="StretchItems.End">
-		<MudPaper Class="flex-auto px-0 pl-2 pb-2"  MinWidth="13rem" Elevation="10">
-			<MudCollapse @ref="TreeView" Expanded="_expandedFilter" >
-			<MudTreeView T="string" Hover ExpandOnClick="@ExpandOnClick" SelectionMode="SelectionMode.ToggleSelection" Color="Color.Info">
-
-				<MudTreeViewItem Text="Brand" Expanded TextTypo="Typo.button" EndIcon="@Icons.Material.Filled.Label" EndIconColor="Color.Info">
-					@foreach (var brand in AvailableBrands)
-					{
-						<MudCheckBox T="bool" Label="@brand" Color="Color.Info" Checked="@BrandFilters[brand]" ValueChanged="((bool value) => OnBrandFilterChanged(brand, value))" Dense="true"/>
-					}
-				</MudTreeViewItem>
-
-				<MudTreeViewItem Text="Tire Size" Expanded TextTypo="Typo.button" EndIcon="@Icons.Material.Filled.Label" EndIconColor="Color.Info">
-					@foreach (var tireSize in AvailableTireSizes)
-					{
-						<MudCheckBox T="bool" Label="@tireSize.ToString()" Color="Color.Info" Checked="@TireSizeFilters[tireSize]" ValueChanged="((bool value) => OnTireSizeFilterChanged(tireSize, value))" Dense="true"/>
-					}
-				</MudTreeViewItem>
-				<MudTreeViewItem Text="Suspension" Expanded TextTypo="Typo.button" EndIcon="@Icons.Material.Filled.Label" EndIconColor="Color.Info">
-					@foreach (var data in _suspensionFilters.Keys.ToList())
-					{
-						<MudCheckBox T="bool" Label="@data" Color="Color.Info" Checked="@_suspensionFilters[data]" ValueChanged="((bool value) => OnSuspensionFilterChanged(data, value))" Dense="true"/>
-					}
-				</MudTreeViewItem>
-
-			</MudTreeView>
-			<MudText Typo="Typo.button">Filtered Products: @FilteredProducts.Count</MudText>
-		</MudCollapse>
-
-		</MudPaper>
-
-
-
-
-		<div class="flex-grow-1">
-			@foreach (Product product in _paginatedProducts)
-			{
-				var stockText = product.StockQuantity > 0 ? "In Stock" : "Out of Stock";
-				var colorText = product.StockQuantity > 0 ? "Color: Green" : "Color: Red";
-
-
-				<MudCard Elevation="10" Class="mb-6">
-					<MudGrid>
-						<MudItem xs="12" sm="7" md="6" lg="4">
-							<MudCardMedia Image="default.jpg" Height="540" Style="margin: 1rem 1rem 1rem 1rem"/>
-						</MudItem>
-						<MudItem xs="12" sm="5" md="6" lg="8">
-							<MudCardContent>
-								<MudText Typo="Typo.subtitle2">@product.Brand</MudText>
-								<MudText Typo="Typo.h4">@product.ProductName</MudText>
-
-								<MudText Typo="Typo.subtitle2" Style=@colorText>Availability: @stockText</MudText>
-
-								<MudText Typo="Typo.subtitle2" Class="mt-1">Description </MudText>
-								<MudText Typo="Typo.body2" Style="word-wrap: break-word; white-space: pre-line">
-									@product.Description
-								</MudText>
-								<MudGrid>
-									<MudItem>
-										<MudIcon Icon="@Icons.Material.Filled.TireRepair" Style="font-size: 4rem; align-content: center">Tire Size</MudIcon>
-										<MudText Align="Align.Center" Typo="Typo.body2">Tire Size</MudText>
-										<MudText Align="Align.Center" Typo="Typo.h6">@product.TireSize"</MudText>
-									</MudItem>
-									<MudItem>
-										<MudIcon Icon="@Icons.Material.Filled.Speed" Style="font-size: 4rem;">Speed</MudIcon>
-										<MudText Align="Align.Center" Typo="Typo.body2">Max Speed</MudText>
-										<MudText Align="Align.Center" Typo="Typo.h6">@product.MaxSpeed km/h</MudText>
-									</MudItem>
-									<MudItem>
-										<MudIcon Icon="@Icons.Material.Filled.Map" Style="font-size: 4rem;">Range</MudIcon>
-										<MudText Align="Align.Center" Typo="Typo.body2">Max Range</MudText>
-										<MudText Align="Align.Center" Typo="Typo.h6">@product.MaxRange km</MudText>
-									</MudItem>
-									<MudItem>
-										<MudIcon Icon="@Icons.Material.Filled.CleanHands" Style="font-size: 4rem;">Weight</MudIcon>
-										<MudText Align="Align.Center" Typo="Typo.body2">Weight</MudText>
-										<MudText Align="Align.Center" Typo="Typo.h6">@product.Weight kg</MudText>
-									</MudItem>
-									<MudItem>
-										<MudIcon Icon="@Icons.Material.Filled.BatteryChargingFull" Style="font-size: 4rem;">Battery</MudIcon>
-										<MudText Align="Align.Center" Typo="Typo.body2">Battery</MudText>
-										<MudText Align="Align.Center" Typo="Typo.h6">@product.BatteryCapacity Wh</MudText>
-									</MudItem>
-									<MudItem>
-										<MudIcon Icon="@Icons.Material.Filled.AlignHorizontalCenter" Style="font-size: 4rem;">Suspension</MudIcon>
-										<MudText Align="Align.Center" Typo="Typo.body2">Suspension</MudText>
-										<MudText Align="Align.Center" Typo="Typo.h6">@product.HasSuspension</MudText>
-									</MudItem>
-								</MudGrid>
-								<MudButton Variant="Variant.Filled" Color="Color.Primary" Class="mt-4">Learn More</MudButton>
-							</MudCardContent>
-						</MudItem>
-					</MudGrid>
-				</MudCard>
-
-			}
-		</div>
-
-	</MudStack>
-	<div class="d-flex flex-column align-center">
-
-		<MudPagination ShowLastButton="true" Size=" Size.Medium" SelectedChanged="PageChanged" Count="@_totalPages" Color="Color.Secondary" Class="pa-4" />
-
-	</div>
-	<MudScrollToTop>
-		<MudFab Color="Color.Secondary" StartIcon="@Icons.Material.Filled.KeyboardArrowUp" />
-	</MudScrollToTop>
-</MudBreakpointProvider>
-
-@code {
-	private int _currentPage = 1;
-	private int _pageSize = 5;
-	private int _totalPages => (int)Math.Ceiling((double)FilteredProducts.Count / _pageSize);
-
-	public IEnumerable<Product> ProductList = new List<Product>();
-	private List<Product> FilteredProducts = new();
-
-	private IEnumerable<Product> _paginatedProducts => FilteredProducts.Skip((_currentPage - 1) * _pageSize)
-		.Take(_pageSize);
-
-	public bool ExpandOnClick = true;
-	private string? _serviceEndpoint;
-	private Dictionary<string, bool?> BrandFilters = new();
-	private Dictionary<int, bool?> TireSizeFilters = new();
-	private readonly Dictionary<string, bool> _suspensionFilters = new();
-
-	private decimal? MinPrice { get; set; }
-	private decimal? MaxPrice { get; set; }
-	private (decimal?, decimal?) PriceRange = (0, 1000);
-	private int? MinStock { get; set; } = 0;
-	private int? MaxStock { get; set; } = 100;
-
-	private List<string> AvailableBrands = new List<string>();
-	private List<int> AvailableTireSizes = new List<int>();
-	public MudCollapse TreeView;
-	private bool _expandedFilter = true;
-	private void ShowFilters()
+@if (_cartItems == null || _cartItems.Count == 0)
+{
+	<MudText Color="Color.Error">Cart is empty!</MudText>
+}
+else
+{
+	@foreach (var item in _cartItems)
 	{
-		_expandedFilter = !_expandedFilter;
+		<MudText>@item.ProductName</MudText>
+		<MudText>@item.Price</MudText>
+		<MudText>@item.Quantity</MudText>
+		<MudText>@item.Total</MudText>
+
 	}
+}
+
+@code
+{
+	private List<CartItem> _cartItems;
 	protected override async Task OnInitializedAsync()
 	{
-		// Load your product data here.  For now, using dummy data.
-		_serviceEndpoint = $"{HttpClient.BaseAddress}StoreApi/Product";
-		await GetProducts();
-
-
-		AvailableBrands = ProductList.Where(p => !string.IsNullOrEmpty(p.Brand)).Select(p => p.Brand!).Distinct().ToList();
-		AvailableTireSizes = ProductList.Where(p => p.TireSize.HasValue).Select(p => p.TireSize.Value).Distinct().ToList();
-
-		//Initialize Filters
-		BrandFilters = AvailableBrands.ToDictionary(brand => brand, brand => (bool?)null);
-		TireSizeFilters = AvailableTireSizes.ToDictionary(size => size, size => (bool?)null);
-
-		MinPrice = ProductList.Min(p => p.Price);
-		MaxPrice = ProductList.Max(p => p.Price);
-		PriceRange = (MinPrice ?? 0, MaxPrice ?? 1000);
-
-		_suspensionFilters.Add("YES", false);
-		_suspensionFilters.Add("NO", false);
-		ApplyFilters();
+		_cartItems = await CartService.GetCartItems();
+		await base.OnInitializedAsync();
 	}
-
-	private void PageChanged(int i)
-	{
-		_currentPage = i;
-	}
-
-	private void ApplyFilters()
-	{
-		IEnumerable<Product> query = ProductList;
-
-		//brands
-		var selectedBrands = BrandFilters.Where(f => f.Value == true).Select(f => f.Key).ToList();
-		if (selectedBrands.Any())
-		{
-			query = query.Where(p => selectedBrands.Contains(p.Brand));
-		}
-
-		var selectedTireList = TireSizeFilters.Where(f => f.Value == true).Select(f => f.Key).ToList();
-		if (selectedTireList.Any())
-		{
-			query = query.Where(p => p.TireSize.HasValue && selectedTireList.Contains(p.TireSize.Value));
-		}
-
-		if (_suspensionFilters["YES"] && _suspensionFilters["NO"] == false)
-		{
-			query = query.Where(p => p.HasSuspension == true);
-		}
-
-		if (_suspensionFilters["NO"] && _suspensionFilters["YES"] == false)
-		{
-			query = query.Where(p => p.HasSuspension == false);
-		}
-		FilteredProducts = query.ToList();
-	}
-
-	private void OnBrandFilterChanged(string brand, bool value)
-	{
-		BrandFilters[brand] = value;
-		ApplyFilters();
-	}
-	private void OnSuspensionFilterChanged(string data, bool value)
-	{
-		_suspensionFilters[data] = value;
-		ApplyFilters();
-	}
-	private void OnHasSuspensionFilterChanged()
-	{
-		ApplyFilters();
-	}
-	private void PriceRangeChanged((decimal?, decimal?) value)
-	{
-		PriceRange = value;
-		ApplyFilters();
-	}
-
-	private void MinStockChanged(int? value)
-	{
-		MinStock = value;
-		ApplyFilters();
-	}
-
-	private void MaxStockChanged(int? value)
-	{
-		MaxStock = value;
-		ApplyFilters();
-	}
-
-	private void OnTireSizeFilterChanged(int tireSize, bool value)
-	{
-		TireSizeFilters[tireSize] = value;
-		ApplyFilters();
-	}
-
-	private async Task GetProducts()
-	{
-		if (HttpClient != null) ProductList = await HttpClient.GetFromJsonAsync<List<Product>>(_serviceEndpoint);
-	}
-
 }
