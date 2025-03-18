@@ -4,7 +4,7 @@
 @using System.Collections.Generic
 @using System.Linq
 @using StoreApi.Entities
-@inject NavigationManager Nav
+@inject NavigationManager NavigationManager 
 @inject HttpClient HttpClient
 @attribute [StreamRendering]
 
@@ -120,7 +120,7 @@
 	</MudStack>
 	<div class="d-flex flex-column align-center">
 
-		<MudPagination ShowLastButton="true" Size=" Size.Medium" SelectedChanged="PageChanged" Count="@_totalPages" Color="Color.Secondary" Class="pa-4" />
+		<MudPagination ShowLastButton="true" Size="Size.Medium" SelectedChanged="PageChanged" Count="@_totalPages" Color="Color.Secondary"  Class="pa-4" />
 
 	</div>
 	<MudScrollToTop>
@@ -129,7 +129,10 @@
 </MudBreakpointProvider>
 
 @code {
-	private int _currentPage = 1;
+	[SupplyParameterFromQuery(Name = "Page")]
+	private int _currentPage { get; set; }
+
+
 	private int _pageSize = 5;
 	private int _totalPages => (int)Math.Ceiling((double)FilteredProducts.Count / _pageSize);
 
@@ -184,7 +187,7 @@
 
 	private void PageChanged(int i)
 	{
-		_currentPage = i;
+		NavigationManager.NavigateTo(NavigationManager.GetUriWithQueryParameter("Page", i));
 	}
 
 	private void ApplyFilters()
@@ -260,17 +263,12 @@
 		if (HttpClient != null) ProductList = await HttpClient.GetFromJsonAsync<List<Product>>(_serviceEndpoint);
 	}
 
-	private string TypeUri(int? itemId) 
-	{
-		return Nav.GetUriWithQueryParameter("/item/itemId", itemId);
-	}
 
 
-	[Inject]
-	private NavigationManager NavigationManager { get; set; }
+
 
 	private void NavigateToItem(int itemId)
 	{
-		NavigationManager.NavigateTo($"{NavigationManager.Uri}/item/{itemId}");
+		NavigationManager.NavigateTo($"{NavigationManager.BaseUri}store/collections/electric-unicycles/item/{itemId}", true);
 	}
 }
