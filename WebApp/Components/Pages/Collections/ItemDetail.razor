@@ -24,13 +24,24 @@
 		<MudCard Elevation="10" Class="mb-6">
 			<MudGrid>
 				<MudItem xs="12" sm="7" md="6" lg="4">
-					<MudCardMedia Image="default.jpg" Height="540" Style="margin: 1rem 1rem 1rem 1rem" />
+					<MudCardMedia Image="default.jpg" Height="540" Style="margin: 1rem 1rem 1rem 1rem"  />
 				</MudItem>
 				<MudItem xs="12" sm="5" md="6" lg="8">
 					<MudCardContent>
 						<MudText Typo="Typo.subtitle2">@_product.Brand</MudText>
 						<MudText Typo="Typo.h4">@_product.ProductName</MudText>
 						<MudText Typo="Typo.subtitle2" Style=@colorText>Availability: @stockText</MudText>
+						<br/>
+						<MudText Typo="Typo.h3" Color="Color.Info">@_product.Price.Value.ToString("C")</MudText>
+						<br/>
+						<MudStack Row="true" AlignItems="AlignItems.Center">
+							<MudIconButton Icon="@Icons.Material.Outlined.Remove" Variant="Variant.Filled" Color="Color.Success" OnClick="OnQuantitySub"/>
+							<MudText Align="Align.Center" Typo="Typo.h6" >@_quantity</MudText>
+							<MudIconButton Icon="@Icons.Material.Outlined.Add" Variant="Variant.Filled" Color="Color.Success" OnClick="OnQuantityAdd" />
+						</MudStack>
+						<br />
+						<MudButton Variant="Variant.Filled" Size="Size.Large" Color="Color.Info">ADD TO CART</MudButton>
+
 
 					</MudCardContent>
 				</MudItem>
@@ -92,6 +103,8 @@
 	public HttpContext? HttpContext { get; set; }
 
 	private Product? _product;
+	private int _quantity = 1;
+
 	private string _serviceEndpoint = "";
 
 	protected override void OnParametersSet()
@@ -113,6 +126,18 @@
 			await GetProductById(id);
 	}
 
+	private void OnQuantitySub()
+	{
+		if (_quantity > 1)
+		{
+			_quantity--;
+		}
+	}
+
+	private void OnQuantityAdd()
+	{
+		_quantity++;
+	}
 	private async Task GetProductById(int id)
 	{
 		try
