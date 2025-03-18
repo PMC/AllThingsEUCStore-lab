@@ -107,9 +107,8 @@
 									</MudItem>
 								</MudGrid>
 								<MudCardActions>
-									<MudButton Variant="Variant.Filled" Color="Color.Primary" @onclick="() => NavigateToItem(product.ProductId)">View Details</MudButton>
+									<MudButton Variant="Variant.Filled" Color="Color.Primary" @onclick="() => NavigateToItem(product.ProductId)" FullWidth="true">View Details</MudButton>
 								</MudCardActions>
-								<MudButton Href="@TypeUri(product.ProductId)" Variant="Variant.Filled" Color="Color.Primary" Class="mt-4" FullWidth="true">Learn More v2</MudButton>
 							</MudCardContent>
 						</MudItem>
 					</MudGrid>

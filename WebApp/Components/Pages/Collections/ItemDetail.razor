@@ -1,50 +1,136 @@
-﻿@page "/store/collections/electric-unicycles/item/{itemId:int}"
+﻿@page "/store/collections/electric-unicycles/item/{itemId}"
 @rendermode @(new InteractiveServerRenderMode(prerender: false))
 @using System.Collections.Generic
 @using System.Linq
+@using System.Net.Http.Headers;
+@using Microsoft.AspNetCore.Http.HttpResults
 @using StoreApi.Entities
+@inject NavigationManager NavigationManager
+@inject HttpClient HttpClient
 
 @attribute [StreamRendering]
 
-<h3>Item Details</h3>
-Item ID =@ItemId
+<MudContainer>
 
 
-
-<MudPaper Class="pa-4">
-	<MudText Typo="Typo.h4">Product Details</MudText>
-
-	@if (_product != null)
-	{
-		<MudText Typo="Typo.h6">@_product.ProductName</MudText>
-		<MudText>Brand: @_product.Brand</MudText>
-		<MudText>Price: @_product.Price</MudText>
-		<MudText>Description: @_product.Description</MudText>
-		<MudImage Src="@_product.ImageUrl" Alt="@_product.ProductName" Height="300" Class="my-4" />
-		//display all other product properties.
-	}
-	else
+	@if (_product == null)
 	{
 		<MudText>Product not found.</MudText>
 	}
-</MudPaper>
+	else
+	{
+		var stockText = _product.StockQuantity > 0 ? "In Stock" : "Out of Stock";
+		var colorText = _product.StockQuantity > 0 ? "Color: Green" : "Color: Red";
+		<MudCard Elevation="10" Class="mb-6">
+			<MudGrid>
+				<MudItem xs="12" sm="7" md="6" lg="4">
+					<MudCardMedia Image="default.jpg" Height="540" Style="margin: 1rem 1rem 1rem 1rem" />
+				</MudItem>
+				<MudItem xs="12" sm="5" md="6" lg="8">
+					<MudCardContent>
+						<MudText Typo="Typo.subtitle2">@_product.Brand</MudText>
+						<MudText Typo="Typo.h4">@_product.ProductName</MudText>
+						<MudText Typo="Typo.subtitle2" Style=@colorText>Availability: @stockText</MudText>
+
+					</MudCardContent>
+				</MudItem>
+			</MudGrid>
+		</MudCard>
+
+
+		<MudPaper Elevation="0" Class="pa-6">
+			<MudText Typo="Typo.h5" Align="Align.Left" Class="mb-2">Product Information</MudText>
+			<MudDivider />
+			<MudText Typo="Typo.body1" Class="mt-4" Style="word-wrap: break-word; white-space: pre-line">
+				@_product.Description
+			</MudText>
+			<MudText Typo="Typo.h5" Align="Align.Left" Class="mb-2 mt-6">Specifications</MudText>
+			<MudDivider Class="mb-4" />
+			<MudGrid>
+				<MudItem>
+					<MudIcon Icon="@Icons.Material.Filled.TireRepair" Style="font-size: 4rem; align-content: center">Tire Size</MudIcon>
+					<MudText Align="Align.Center" Typo="Typo.body2">Tire Size</MudText>
+					<MudText Align="Align.Center" Typo="Typo.h6">@_product.TireSize"</MudText>
+				</MudItem>
+				<MudItem>
+					<MudIcon Icon="@Icons.Material.Filled.Speed" Style="font-size: 4rem;">Speed</MudIcon>
+					<MudText Align="Align.Center" Typo="Typo.body2">Max Speed</MudText>
+					<MudText Align="Align.Center" Typo="Typo.h6">@_product.MaxSpeed km/h</MudText>
+				</MudItem>
+				<MudItem>
+					<MudIcon Icon="@Icons.Material.Filled.Map" Style="font-size: 4rem;">Range</MudIcon>
+					<MudText Align="Align.Center" Typo="Typo.body2">Max Range</MudText>
+					<MudText Align="Align.Center" Typo="Typo.h6">@_product.MaxRange km</MudText>
+				</MudItem>
+				<MudItem>
+					<MudIcon Icon="@Icons.Material.Filled.CleanHands" Style="font-size: 4rem;">Weight</MudIcon>
+					<MudText Align="Align.Center" Typo="Typo.body2">Weight</MudText>
+					<MudText Align="Align.Center" Typo="Typo.h6">@_product.Weight kg</MudText>
+				</MudItem>
+				<MudItem>
+					<MudIcon Icon="@Icons.Material.Filled.BatteryChargingFull" Style="font-size: 4rem;">Battery</MudIcon>
+					<MudText Align="Align.Center" Typo="Typo.body2">Battery</MudText>
+					<MudText Align="Align.Center" Typo="Typo.h6">@_product.BatteryCapacity Wh</MudText>
+				</MudItem>
+				<MudItem>
+					<MudIcon Icon="@Icons.Material.Filled.AlignHorizontalCenter" Style="font-size: 4rem;">Suspension</MudIcon>
+					<MudText Align="Align.Center" Typo="Typo.body2">Suspension</MudText>
+					<MudText Align="Align.Center" Typo="Typo.h6">@_product.HasSuspension</MudText>
+				</MudItem>
+			</MudGrid>
+		</MudPaper>
+
+	}
+
+</MudContainer>
 
 @code {
 	[Parameter]
-	public int ItemId { get; set; }
+	public string? ItemId { get; set; }
 
 	[CascadingParameter]
 	public HttpContext? HttpContext { get; set; }
 
-	private Product _product;
+	private Product? _product;
+	private string _serviceEndpoint = "";
 
 	protected override void OnParametersSet()
 	{
-		_product = GetProductById(ItemId);
+		int id;
+		bool result = int.TryParse(ItemId, out id);
+		if (result)
+			_ = GetProductById(id);
 	}
-	private Product GetProductById(int id)
+
+
+	protected override async Task OnInitializedAsync()
 	{
-		// Replace this with your actual logic to fetch the product by ID
-		return new Product(){ProductName = "te"};
+		// Load your product data here.  For now, using dummy data.
+		_serviceEndpoint = $"{HttpClient.BaseAddress}StoreApi/Product/";
+		int id;
+		bool result = int.TryParse(ItemId, out id);
+		if (result)
+			await GetProductById(id);
+	}
+
+	private async Task GetProductById(int id)
+	{
+		try
+		{
+			if (HttpClient != null)
+			{
+				var result = await HttpClient.GetFromJsonAsync<Product>(_serviceEndpoint + id);
+				if (result != null)
+				{
+					_product = result;
+				}
+			}
+
+		}
+		catch (Exception e)
+		{
+			Console.WriteLine(e.ToString());
+		}
+
 	}
 }
