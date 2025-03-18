@@ -8,17 +8,17 @@
 @inject NavigationManager NavigationManager
 @inject HttpClient HttpClient
 
-@attribute [StreamRendering]
-
 <MudContainer>
 
 
 	@if (_product == null)
 	{
+		<PageTitle>Product not found</PageTitle>
 		<MudText>Product not found.</MudText>
 	}
 	else
 	{
+		<PageTitle>Details for @_product.ProductName</PageTitle>
 		var stockText = _product.StockQuantity > 0 ? "In Stock" : "Out of Stock";
 		var colorText = _product.StockQuantity > 0 ? "Color: Green" : "Color: Red";
 		<MudCard Elevation="10" Class="mb-6">
