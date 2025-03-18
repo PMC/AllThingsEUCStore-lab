@@ -1,17 +1,20 @@
 ﻿@page "/store/collections/electric-unicycles"
-
 @rendermode @(new InteractiveServerRenderMode(prerender: false))
 @using System.Collections.Generic
 @using System.Linq
+@using System.Runtime.InteropServices.JavaScript
 @using StoreApi.Entities
 @inject NavigationManager NavigationManager 
 @inject HttpClient HttpClient
-@attribute [StreamRendering]
+
+<PageTitle>ELECTRIC UNICYCLES</PageTitle>
 
 <MudBreakpointProvider>
 
 	<MudStack>
+
 		<MudItem xs="12"><MudText Typo="Typo.h6">ELECTRIC UNICYCLES</MudText></MudItem>
+
 		<MudToolBar>
 			<MudButton Variant="Variant.Filled" OnClick="ShowFilters" StartIcon="@Icons.Material.Filled.FilterAlt" Color="Color.Secondary" Size="Size.Small">Filter</MudButton>
 		</MudToolBar>
@@ -119,8 +122,7 @@
 
 	</MudStack>
 	<div class="d-flex flex-column align-center">
-
-		<MudPagination ShowLastButton="true" Size="Size.Medium" SelectedChanged="PageChanged" Count="@_totalPages" Color="Color.Secondary"  Class="pa-4" />
+		<MudPagination ShowLastButton="true" Size="Size.Medium" SelectedChanged="PageChanged"  Selected="@_selected" Count="@_totalPages" Color="Color.Secondary"  Class="pa-4" />
 
 	</div>
 	<MudScrollToTop>
@@ -132,8 +134,12 @@
 	[SupplyParameterFromQuery(Name = "Page")]
 	private int _currentPage { get; set; }
 
+	private int _selected;
+	[SupplyParameterFromQuery]
+	private int PageSize { get; set; }
 
-	private int _pageSize = 5;
+	private int _pageSize { get; set; } = 5;
+
 	private int _totalPages => (int)Math.Ceiling((double)FilteredProducts.Count / _pageSize);
 
 	public IEnumerable<Product> ProductList = new List<Product>();
@@ -148,26 +154,20 @@
 	private Dictionary<int, bool?> TireSizeFilters = new();
 	private readonly Dictionary<string, bool> _suspensionFilters = new();
 
-	private decimal? MinPrice { get; set; }
-	private decimal? MaxPrice { get; set; }
-	private (decimal?, decimal?) PriceRange = (0, 1000);
-	private int? MinStock { get; set; } = 0;
-	private int? MaxStock { get; set; } = 100;
-
 	private List<string> AvailableBrands = new List<string>();
 	private List<int> AvailableTireSizes = new List<int>();
 	public MudCollapse TreeView;
 	private bool _expandedFilter = true;
+
 	private void ShowFilters()
 	{
 		_expandedFilter = !_expandedFilter;
 	}
 	protected override async Task OnInitializedAsync()
 	{
-		// Load your product data here.  For now, using dummy data.
 		_serviceEndpoint = $"{HttpClient.BaseAddress}StoreApi/Product";
 		await GetProducts();
-
+		PageSize = 5;
 
 		AvailableBrands = ProductList.Where(p => !string.IsNullOrEmpty(p.Brand)).Select(p => p.Brand!).Distinct().ToList();
 		AvailableTireSizes = ProductList.Where(p => p.TireSize.HasValue).Select(p => p.TireSize.Value).Distinct().ToList();
@@ -176,18 +176,33 @@
 		BrandFilters = AvailableBrands.ToDictionary(brand => brand, brand => (bool?)null);
 		TireSizeFilters = AvailableTireSizes.ToDictionary(size => size, size => (bool?)null);
 
-		MinPrice = ProductList.Min(p => p.Price);
-		MaxPrice = ProductList.Max(p => p.Price);
-		PriceRange = (MinPrice ?? 0, MaxPrice ?? 1000);
+		//MinPrice = ProductList.Min(p => p.Price);
+		//MaxPrice = ProductList.Max(p => p.Price);
+		//PriceRange = (MinPrice ?? 0, MaxPrice ?? 1000);
 
 		_suspensionFilters.Add("YES", false);
 		_suspensionFilters.Add("NO", false);
 		ApplyFilters();
 	}
 
+	protected override void OnParametersSet()
+	{
+		
+		if (_currentPage == 0)
+		{
+			_currentPage = 1;
+		}
+		_selected = _currentPage;
+	}
+
 	private void PageChanged(int i)
 	{
-		NavigationManager.NavigateTo(NavigationManager.GetUriWithQueryParameter("Page", i));
+		NavigationManager.NavigateTo(NavigationManager.GetUriWithQueryParameters(
+			new Dictionary<string, object?>
+				{
+					["Page"] = i,
+					["PageSize"] = PageSize
+				}),false,false);
 	}
 
 	private void ApplyFilters()
@@ -229,27 +244,6 @@
 		_suspensionFilters[data] = value;
 		ApplyFilters();
 	}
-	private void OnHasSuspensionFilterChanged()
-	{
-		ApplyFilters();
-	}
-	private void PriceRangeChanged((decimal?, decimal?) value)
-	{
-		PriceRange = value;
-		ApplyFilters();
-	}
-
-	private void MinStockChanged(int? value)
-	{
-		MinStock = value;
-		ApplyFilters();
-	}
-
-	private void MaxStockChanged(int? value)
-	{
-		MaxStock = value;
-		ApplyFilters();
-	}
 
 	private void OnTireSizeFilterChanged(int tireSize, bool value)
 	{
@@ -262,10 +256,6 @@
 
 		if (HttpClient != null) ProductList = await HttpClient.GetFromJsonAsync<List<Product>>(_serviceEndpoint);
 	}
-
-
-
-
 
 	private void NavigateToItem(int itemId)
 	{
