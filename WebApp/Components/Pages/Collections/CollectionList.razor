@@ -7,11 +7,11 @@
 @inject NavigationManager NavigationManager 
 @inject HttpClient HttpClient
 @inject ProtectedLocalStorage ProtectedLocalStorage
-
+<MudDialogProvider />
+<MudSnackbarProvider />
 <PageTitle>ELECTRIC UNICYCLES</PageTitle>
 
 <MudBreakpointProvider>
-
 	<MudStack>
 
 		<MudItem xs="12"><MudText Typo="Typo.h6">ELECTRIC UNICYCLES</MudText></MudItem>
@@ -126,6 +126,12 @@
 		<MudPagination ShowLastButton="true" Size="Size.Medium" SelectedChanged="PageChanged"  Selected="@_selected" Count="@_totalPages" Color="Color.Secondary"  Class="pa-4" />
 
 	</div>
+
+	@foreach (var e in EventList)
+	{
+		<MudText>@e</MudText>
+	}
+
 	<MudScrollToTop>
 		<MudFab Color="Color.Secondary" StartIcon="@Icons.Material.Filled.KeyboardArrowUp" />
 	</MudScrollToTop>
@@ -161,12 +167,14 @@
 	public MudCollapse TreeView;
 	private bool _expandedFilter = true;
 
+	private List<string> EventList = new();
 	private void ShowFilters()
 	{
 		_expandedFilter = !_expandedFilter;
 	}
 	protected override async Task OnInitializedAsync()
 	{
+		EventList.Add("OnInitializedAsync-ON " + DateTime.UtcNow);
 		_serviceEndpoint = $"{HttpClient.BaseAddress}StoreApi/Product";
 		await GetProducts();
 		PageSize = 5;
@@ -185,17 +193,21 @@
 		_suspensionFilters.Add("YES", false);
 		_suspensionFilters.Add("NO", false);
 		ApplyFilters();
+		EventList.Add("OnInitializedAsync-Done " + DateTime.UtcNow);
+		await base.OnInitializedAsync();
 	}
 
 	protected override void OnParametersSet()
 	{
+		EventList.Add("OnParametersSet-ON " + DateTime.UtcNow);
 		if (_currentPage == 0)
 		{
 			_currentPage = 1;
 		}
 		_selected = _currentPage;
 		//var result = ProtectedLocalStorage.GetType << IDictionary<string, bool?>> ("FilterBrand");
-
+		EventList.Add("OnParametersSet-Done " + DateTime.UtcNow);
+		base.OnParametersSet();
 	}
 
 	protected override async Task OnParametersSetAsync()

@@ -1,11 +1,14 @@
 ﻿@page "/ListProducts"
 @rendermode @(new InteractiveServerRenderMode(prerender: false))
+
 @using StoreApi.Entities
 @using System.Net.Http.Headers;
 @inject HttpClient HttpClient
 @inject IDialogService DialogService
 @inject ISnackbar Snackbar
 <MudPopoverProvider />
+<MudDialogProvider />
+<MudSnackbarProvider />
 
 <MudDataGrid T="@Product" Items="@ProductList" Hover="true" Groupable="true" Dense="true"
 MultiSelection="false" Filterable="true"
@@ -139,7 +142,7 @@ ShowMenuIcon="true"
 				Price = contextItem.Price
 			};
 
-			var options = new DialogOptions { FullWidth = true, MaxWidth = MaxWidth.Medium};
+			var options = new DialogOptions { FullWidth = true, MaxWidth = MaxWidth.ExtraExtraLarge};
 			var parameters = new DialogParameters<ProductEditDialog> { { x => x.Product, contextItem } };
 
 			var dialog = await DialogService.ShowAsync<ProductEditDialog>("Update Product", parameters);

@@ -13,15 +13,15 @@
 	<MudNavLink  Href="test" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.List">Test Page</MudNavLink>
 	
 	<MudNavLink Href="store/collections/electric-unicycles/item/4" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.List">Test Detail</MudNavLink>
-	<MudNavLink Href="store/collections/electric-unicycles" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.List">Electric Unicycles</MudNavLink>
+	<MudNavLink Href="store/collections/electric-unicycles" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.List" >Electric Unicycles</MudNavLink>
 
-	<MudNavLink  Href="auth" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.Lock">Auth Required</MudNavLink>
+	<MudNavLink Href="auth" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.Lock">Auth Required</MudNavLink>
 	<AuthorizeView>
 		<Authorized>
 			<MudNavLink Href="Account/Manage" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.Person">@context.User.Identity?.Name</MudNavLink>
 			<form action="Account/Logout" method="post">
 				<AntiforgeryToken/>
-				<input type="hidden" name="ReturnUrl" value="@currentUrl"/>
+				<input type="hidden" name="ReturnUrl" value="@ReturnUrl" />
 				<button type="submit" class="mud-nav-link mud-ripple">
 					<MudIcon Icon="@Icons.Material.Filled.Logout" Color="Color.Info" Class="mr-3"></MudIcon> Logout
 				</button>
@@ -36,19 +36,20 @@
 
 
 @code {
-    private string? currentUrl;
+	[SupplyParameterFromQuery]
+	private string? ReturnUrl { get; set; }
 
 	//color: rgb(66, 104, 213) primary color
     protected override void OnInitialized()
     {
 	
-        currentUrl = NavigationManager.ToBaseRelativePath(NavigationManager.Uri);
+	    ReturnUrl = NavigationManager.ToBaseRelativePath(NavigationManager.Uri);
         NavigationManager.LocationChanged += OnLocationChanged;
     }
 
     private void OnLocationChanged(object? sender, LocationChangedEventArgs e)
     {
-        currentUrl = NavigationManager.ToBaseRelativePath(e.Location);
+	    ReturnUrl = NavigationManager.ToBaseRelativePath(e.Location);
         StateHasChanged();
     }
 
