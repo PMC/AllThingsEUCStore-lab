@@ -2,10 +2,11 @@
 @rendermode @(new InteractiveServerRenderMode(prerender: false))
 @using System.Collections.Generic
 @using System.Linq
-@using System.Runtime.InteropServices.JavaScript
+@using Microsoft.AspNetCore.Components.Server.ProtectedBrowserStorage
 @using StoreApi.Entities
 @inject NavigationManager NavigationManager 
 @inject HttpClient HttpClient
+@inject ProtectedLocalStorage ProtectedLocalStorage
 
 <PageTitle>ELECTRIC UNICYCLES</PageTitle>
 
@@ -150,6 +151,7 @@
 
 	public bool ExpandOnClick = true;
 	private string? _serviceEndpoint;
+
 	private Dictionary<string, bool?> BrandFilters = new();
 	private Dictionary<int, bool?> TireSizeFilters = new();
 	private readonly Dictionary<string, bool> _suspensionFilters = new();
@@ -187,12 +189,27 @@
 
 	protected override void OnParametersSet()
 	{
-		
 		if (_currentPage == 0)
 		{
 			_currentPage = 1;
 		}
 		_selected = _currentPage;
+		//var result = ProtectedLocalStorage.GetType << IDictionary<string, bool?>> ("FilterBrand");
+
+	}
+
+	protected override async Task OnParametersSetAsync()
+	{
+		/*	var result = await ProtectedLocalStorage.GetAsync<Dictionary<string, bool?>>("Brand");
+		if (result.Success)
+		{
+			foreach (var i in result.Value)
+			{
+				BrandFilters[i.Key] = i.Value;
+				}
+
+			}
+		*/
 	}
 
 	private void PageChanged(int i)
@@ -237,6 +254,7 @@
 	private void OnBrandFilterChanged(string brand, bool value)
 	{
 		BrandFilters[brand] = value;
+
 		ApplyFilters();
 	}
 	private void OnSuspensionFilterChanged(string data, bool value)
