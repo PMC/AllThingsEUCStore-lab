@@ -4,7 +4,6 @@
 @implements IDisposable
 @inject ICartService CartService
 @inject ProtectedLocalStorage ProtectedLocalStorage
-@rendermode @(new InteractiveServerRenderMode(prerender: false))
 
 <MudBadge Content="GetCount()" Origin="Origin.CenterRight" Overlap="true" Color="Color.Error" Class="ma-1 pa-1">
 	<MudIconButton  Size="Size.Large" Href="/cart" Icon="@Icons.Material.Filled.ShoppingCart" Color="Color.Inherit" ClickPropagation="true" />
