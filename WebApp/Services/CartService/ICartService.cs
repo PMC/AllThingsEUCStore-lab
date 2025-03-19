@@ -9,4 +9,5 @@ public interface ICartService
     Task<List<CartItem>> GetCartItems();
     Task DeleteItem(CartItem item);
     Task EmptyCart();
+    int GetCount();
 }

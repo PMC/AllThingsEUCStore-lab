@@ -7,7 +7,7 @@ public class CartService : ICartService
 {
     private readonly ProtectedLocalStorage _localStorage;
     private readonly ISnackbar _snackbar;
-
+    private int _count;
     public event Action OnChange;
 
     public CartService(ProtectedLocalStorage localStorage, ISnackbar snackbar)
@@ -40,10 +40,11 @@ public class CartService : ICartService
             sameItem.Quantity += item.Quantity;
         }
 
+        _count = cartList.Count;
         await _localStorage.SetAsync("cart", cartList);
 
         _snackbar.Add($"{item.ProductName} Added to cart:", Severity.Success);
-        //OnChange.Invoke();
+        OnChange.Invoke();
     }
 
     public async Task<List<CartItem>> GetCartItems()
@@ -52,9 +53,11 @@ public class CartService : ICartService
 
         if (result.Success == false || result.Value == null)
         {
+            _count = 0;
             return new();
         }
 
+        _count = result.Value.Count;
         return result.Value;
     }
 
@@ -64,6 +67,7 @@ public class CartService : ICartService
 
         if (result.Success == false || result.Value == null)
         {
+            _count = 0;
             return;
         }
 
@@ -74,15 +78,22 @@ public class CartService : ICartService
         if (cartItem != null)
             cartList.Remove(cartItem);
 
+        _count = cartList.Count;
         await _localStorage.SetAsync("cart", cartList);
 
-        //OnChange.Invoke();
+        OnChange.Invoke();
 
     }
 
     public async Task EmptyCart()
     {
         await _localStorage.DeleteAsync("cart");
-        //OnChange.Invoke();
+        _count = 0;
+        OnChange.Invoke();
+    }
+
+    public int GetCount()
+    {
+        return _count;
     }
 }

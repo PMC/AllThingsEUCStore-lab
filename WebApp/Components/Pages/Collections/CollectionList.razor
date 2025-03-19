@@ -6,9 +6,8 @@
 @using StoreApi.Entities
 @inject NavigationManager NavigationManager 
 @inject HttpClient HttpClient
-@inject ProtectedLocalStorage ProtectedLocalStorage
-<MudDialogProvider />
-<MudSnackbarProvider />
+
+
 <PageTitle>ELECTRIC UNICYCLES</PageTitle>
 
 <MudBreakpointProvider>
@@ -289,6 +288,6 @@
 
 	private void NavigateToItem(int itemId)
 	{
-		NavigationManager.NavigateTo($"{NavigationManager.BaseUri}store/collections/electric-unicycles/item/{itemId}", true);
+		NavigationManager.NavigateTo($"{NavigationManager.BaseUri}store/collections/electric-unicycles/item/{itemId}", false);
 	}
 }
