@@ -43,22 +43,64 @@ public class CartService : ICartService
         _count = cartList.Count;
         await _localStorage.SetAsync("cart", cartList);
 
-        _snackbar.Add($"{item.ProductName} Added to cart:", Severity.Success);
-        OnChange.Invoke();
+        //_snackbar.Add($"{item.ProductName} Added to cart:", Severity.Success);
+        ShowVariant($"{item.ProductName} Added to cart:", Variant.Filled);
+        if (OnChange != null) OnChange.Invoke();
+    }
+
+    public async Task SetQuantityAsync(int id, int quantity)
+    {
+        try
+        {
+            var result = await _localStorage.GetAsync<List<CartItem>>("cart");
+            if (result.Success == false || result.Value == null)
+            {
+                return;
+            }
+
+            var cart = result.Value;
+            var item = cart.FirstOrDefault(i => i.ProductId == id);
+            if (item == null)
+            {
+                return;
+            }
+
+            item.Quantity = quantity;
+            _count = cart.Count;
+            await _localStorage.SetAsync("cart", cart);
+            if (OnChange != null) OnChange.Invoke();
+
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+
+        }
+        return;
     }
 
     public async Task<List<CartItem>> GetCartItems()
     {
-        var result = await _localStorage.GetAsync<List<CartItem>>("cart");
-
-        if (result.Success == false || result.Value == null)
+        try
         {
-            _count = 0;
+            var result = await _localStorage.GetAsync<List<CartItem>>("cart");
+
+            if (result.Success == false || result.Value == null)
+            {
+                _count = 0;
+                return new();
+            }
+
+            _count = result.Value.Count;
+            return result.Value;
+
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
             return new();
         }
 
-        _count = result.Value.Count;
-        return result.Value;
     }
 
     public async Task DeleteItem(CartItem item)
@@ -81,7 +123,7 @@ public class CartService : ICartService
         _count = cartList.Count;
         await _localStorage.SetAsync("cart", cartList);
 
-        OnChange.Invoke();
+        if (OnChange != null) OnChange.Invoke();
 
     }
 
@@ -89,11 +131,23 @@ public class CartService : ICartService
     {
         await _localStorage.DeleteAsync("cart");
         _count = 0;
-        OnChange.Invoke();
+        if (OnChange != null) OnChange.Invoke();
     }
 
     public int GetCount()
     {
         return _count;
+    }
+
+    void ShowVariant(string message, Variant variant)
+    {
+
+        _snackbar.Add(message, Severity.Success, (options) =>
+        {
+            options.CloseAfterNavigation = true;
+            options.SnackbarVariant = variant;
+            options.VisibleStateDuration = 2000;
+
+        });
     }
 }

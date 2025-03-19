@@ -209,19 +209,7 @@
 		base.OnParametersSet();
 	}
 
-	protected override async Task OnParametersSetAsync()
-	{
-		/*	var result = await ProtectedLocalStorage.GetAsync<Dictionary<string, bool?>>("Brand");
-		if (result.Success)
-		{
-			foreach (var i in result.Value)
-			{
-				BrandFilters[i.Key] = i.Value;
-				}
 
-			}
-		*/
-	}
 
 	private void PageChanged(int i)
 	{
