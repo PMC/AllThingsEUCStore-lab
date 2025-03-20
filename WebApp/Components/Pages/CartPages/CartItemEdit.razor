@@ -1,0 +1,59 @@
+@using WebApp.Entities
+@rendermode @(new InteractiveServerRenderMode(prerender: false))
+
+@if (_product == null)
+{
+	<MudText>Loading ....</MudText>
+}
+else
+{
+	<MudTable T="CartItem" @bind-SelectedItem="_product">
+		<HeaderContent>
+			<MudTh>Product</MudTh>
+			<MudTh>Description</MudTh>
+			<MudTh>Availability</MudTh>
+			<MudTh>Unit price</MudTh>
+			<MudTh>Quantity</MudTh>
+			<MudTh>Total</MudTh>
+			
+		</HeaderContent>
+		<RowTemplate>
+			<MudTd><MudImage Src="default.jpg" Class="ma-4 pa-1" ObjectFit="ObjectFit.ScaleDown" Width="96" ObjectPosition="ObjectPosition.Left" Elevation="2" /></MudTd>
+			<MudTd>@context.ProductName</MudTd>
+			<MudTd>yes</MudTd>
+			<MudTd>@context.Price.ToString("c")</MudTd>
+			<MudTd>@context.Quantity</MudTd>
+			<MudTd>@((context.Price * context.Quantity).ToString("c"))</MudTd>
+		</RowTemplate>
+	</MudTable>
+
+}
+
+
+@code
+{
+	[Parameter]
+	public CartItem Item { get; set; }
+
+	private CartItem _product;
+	private int _quantity;
+
+	protected override void OnParametersSet()
+	{
+		_product = Item;
+		_quantity = _product.Quantity;
+	}
+
+	private void OnQuantitySub()
+	{
+		if (_quantity > 1)
+		{
+			_quantity--;
+		}
+	}
+
+	private void OnQuantityAdd()
+	{
+		_quantity++;
+	}
+}

@@ -1,0 +1,262 @@
+﻿@page "/h2"
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+<style>
+	/* Reset and Base Styles */
+	* {
+		margin: 0;
+		padding: 0;
+		box-sizing: border-box;
+		font-family: 'Radley', sans-serif;
+	}
+
+	body {
+		background: linear-gradient(135deg, #1a1a2e, #16213e);
+		color: white;
+		line-height: 1.6;
+	}
+
+	/* Header */
+	header {
+		padding: 1rem;
+		text-align: center;
+		position: fixed;
+		width: 100%;
+		top: 0;
+		z-index: 1000;
+		background: rgba(26, 26, 46, 0.95);
+	}
+
+	nav {
+		display: flex;
+		justify-content: space-between;
+		max-width: 1200px;
+		margin: 0 auto;
+	}
+
+	.logo {
+		font-size: 2rem;
+		color: #ff6b6b;
+		text-decoration: none;
+		font-weight: bold;
+		text-shadow: 0 0 10px rgba(255,107,107,0.5);
+	}
+
+	.nav-links {
+		display: flex;
+		gap: 2rem;
+	}
+
+		.nav-links a {
+			color: white;
+			text-decoration: none;
+			transition: color 0.3s;
+		}
+
+			.nav-links a:hover {
+				color: #ff6b6b;
+			}
+
+	/* Hero Section */
+	.hero {
+		height: 100vh;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		text-align: center;
+		padding: 2rem;
+		background: linear-gradient(135deg, #1a1a2e, #16213e);
+	}
+
+	.hero-content {
+		max-width: 800px;
+	}
+
+	.hero h1 {
+		font-size: 4rem;
+		margin-bottom: 1rem;
+		text-shadow: 0 0 20px rgba(255,107,107,0.5);
+	}
+
+	.hero p {
+		font-size: 1.5rem;
+		margin-bottom: 2rem;
+	}
+
+	/* Call to Action Button */
+	.cta-button {
+		display: inline-block;
+		padding: 1rem 2rem;
+		background: linear-gradient(45deg, #ff6b6b, #ff8e8e);
+		color: white;
+		text-decoration: none;
+		border-radius: 30px;
+		font-size: 1.2rem;
+		transition: transform 0.3s, box-shadow 0.3s;
+	}
+
+		.cta-button:hover {
+			transform: translateY(-5px);
+			box-shadow: 0 10px 20px rgba(255,107,107,0.4);
+		}
+
+	/* Products Section */
+	.products {
+		padding: 5rem 2rem;
+		background: #16213e;
+	}
+
+	.product-grid {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+		gap: 2rem;
+		max-width: 1200px;
+		margin: 0 auto;
+	}
+
+	.product-card {
+		background: rgba(255,255,255,0.05);
+		border-radius: 10px;
+		padding: 1.5rem;
+		transition: transform 0.3s;
+	}
+
+		.product-card:hover {
+			transform: translateY(-10px);
+		}
+
+	/* Video Section */
+	.video-section {
+		position: relative;
+		padding: 2rem;
+		background: #16213e;
+	}
+
+	.youtube-iframe {
+		width: 100%;
+		height: 400px;
+		border-radius: 10px;
+	}
+
+	/* Benefits Section */
+	.benefits {
+		padding: 5rem 2rem;
+		text-align: center;
+	}
+
+	.benefit-points {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+		gap: 2rem;
+		max-width: 1200px;
+		margin: 0 auto;
+	}
+
+	.benefit-card {
+		background: rgba(255,255,255,0.05);
+		padding: 2rem;
+		border-radius: 10px;
+		text-align: left;
+	}
+
+	/* Footer */
+	footer {
+		background: #1a1a2e;
+		color: white;
+		padding: 3rem;
+		text-align: center;
+	}
+
+	.social-links {
+		margin-top: 1rem;
+	}
+
+		.social-links a {
+			color: white;
+			text-decoration: none;
+			margin: 0 0.5rem;
+			font-size: 1.5rem;
+		}
+
+	/* Animations */
+
+
+
+
+
+	.floating {
+		animation: float 3s ease-in-out infinite;
+	}
+
+
+
+	.hero h1 {
+		font-size: 2.5rem;
+	}
+
+	}
+</style>
+
+
+<header>
+	<nav>
+		<a href="#" class="logo">NextSpeed</a>
+		<div class="nav-links">
+			<a href="#products">Products</a>
+			<a href="#benefits">Benefits</a>
+			<a href="#video">Video</a>
+			<a href="#contact">Contact</a>
+		</div>
+	</nav>
+</header>
+
+<section class="hero">
+	<div class="hero-content">
+		<h1>Experience the Future of Performance</h1>
+		<p>Enhance your skills and push your limits with our cutting-edge products and training solutions.</p>
+		<a href="#products" class="cta-button">Explore Now</a>
+	</div>
+</section>
+
+<section id="products" class="products">
+	<div class="product-grid">
+		<div class="product-card">
+			<h3>Performance Training Gear</h3>
+			<p>Durable and high-quality equipment designed for professional athletes.</p>
+		</div>
+		<div class="product-card">
+			<h3>Wireless Fitness Trackers</h3>
+			<p>Monitor your progress with real-time data and advanced tracking features.</p>
+		</div>
+		<div class="product-card">
+			<h3>Sport Performance Analytics</h3>
+			<p>Advanced software to analyze performance and improve training outcomes.</p>
+		</div>
+	</div>
+</section>
+
+<section id="video" class="video-section">
+	<h2>See It in Action</h2>
+	<div class="youtube-iframe">
+		<!-- Replace with your YouTube video iframe -->
+	</div>
+</section>
+
+<section id="benefits" class="benefits">
+	<h2>Why Choose NextSpeed?</h2>
+	<div class="benefit-points">
+		<div class="benefit-card">
+			<h3>Professional Design</h3>
+			<p>Crafted by industry experts for optimal performance and user experience.</p>
+		</div>
+		<div class="benefit-card">
+			<h3>Durable Construction</h3>
+			<p>built to last, ensuring long-term investment in your training.</p>
+		</div>
+		<div class="benefit-card">
+			<h3>Customizable Options</h3>
+			<p>Tailored solutions to meet the unique needs of each athlete.</p>
+		</div>
+	</div>
+</section>
+

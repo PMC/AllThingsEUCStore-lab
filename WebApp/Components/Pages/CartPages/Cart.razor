@@ -1,0 +1,116 @@
+﻿@page "/cart"
+@using Microsoft.IdentityModel.Tokens
+@using WebApp.Entities
+@using WebApp.Services.CartService
+@inject ICartService CartService
+@inject IDialogService DialogService
+@inject ISnackbar Snackbar
+
+@rendermode @(new InteractiveServerRenderMode(prerender: false))
+<PageTitle>Shopping Cart - Summary</PageTitle>
+
+<MudText Typo="Typo.h5" GutterBottom="true">Shopping Cart - Summary</MudText>
+
+@if (_cartItems != null && _cartItems.Any())
+{
+	<MudTable Items="@_cartItems" Dense="true"
+			  Hover="true"
+			  Bordered="true"
+			  Outlined="true">
+
+
+		<ColGroup>
+			<col style="width: auto;" />
+			<col style="width: 60%;" />
+			<col />
+			<col style="width: auto;" />
+			<col style="width: auto;" />
+			<col style="width: auto;" />
+		</ColGroup>
+		<HeaderContent>
+			<MudTh>Product</MudTh>
+			<MudTh>Description</MudTh>
+			<MudTh Style="text-align: center">Unit price</MudTh>
+			<MudTh Style="text-align: center">Qty</MudTh>
+			<MudTh Style="text-align: right">Total</MudTh>
+		</HeaderContent>
+		<RowTemplate>
+			<MudTd DataLabel="Image"><MudImage Src="default.jpg" ObjectFit="ObjectFit.ScaleDown" Width="96" ObjectPosition="ObjectPosition.Left" Elevation="2" /></MudTd>
+			<MudTd DataLabel="Product">@context.ProductName<MudSpacer />Available</MudTd>
+			<MudTd DataLabel="Unit price" Style="text-align: center">@context.Price.ToString("c")</MudTd>
+			<MudTd DataLabel="Qty" >
+				<MudStack Row="false" AlignItems="AlignItems.Center" >
+					<MudText    Align="Align.Center" Typo="Typo.subtitle1">@context.Quantity</MudText>
+					<MudStack Row="true" AlignItems="AlignItems.Center">
+						<MudIconButton Icon="@Icons.Material.Outlined.Remove" Variant="Variant.Filled" Size="Size.Small" Color="Color.Success" />
+
+						<MudIconButton Icon="@Icons.Material.Outlined.Add" Variant="Variant.Filled"  Size="Size.Small" Color="Color.Success"/>
+					</MudStack>
+				</MudStack>
+			</MudTd>
+
+			<MudTd Style="text-align: right" DataLabel="Total">@((context.Price * context.Quantity).ToString("c"))</MudTd>
+		</RowTemplate>
+	</MudTable>
+}
+else
+{
+	<MudText>Your cart is empty.</MudText>
+}
+
+
+@code {
+	private List<CartItem> _cartItems = new();
+
+	private OrderInfo _order = new();
+
+	private void PlaceOrder()
+	{
+
+		// TODO: Implement order placement logic here
+		Console.WriteLine("Order placed!");
+		Console.WriteLine($"Name: {_order.FirstName} {_order.LastName}");
+		Console.WriteLine($"Address: {_order.Address1},{_order.Address2}, {_order.City}, {_order.ZipCode}");
+		Console.WriteLine($"Email: {_order.Email}");
+		Console.WriteLine($"Phone: {_order.PhoneNumber}");
+	}
+
+
+
+	protected override async Task OnAfterRenderAsync(bool firstRender)
+	{
+		if (firstRender)
+		{
+			var result = await CartService.GetCartItems();
+			if (result.IsNullOrEmpty())
+			{
+				_cartItems = new List<CartItem>();
+				return;
+			}
+
+			_cartItems = result;
+			StateHasChanged();
+		}
+	}
+
+
+	private void ItemHasBeenCommitted(object? obj)
+	{
+		AddEditionEvent($"RowEditCommit event: Changes to Element : committed", Variant.Text);
+
+	}
+
+	void AddEditionEvent(string message, Variant variant)
+	{
+
+		Snackbar.Add(message, Severity.Success, (options) =>
+		{
+			options.CloseAfterNavigation = true;
+			options.SnackbarVariant = variant;
+			options.VisibleStateDuration = 2000;
+
+		});
+	}
+
+}
+

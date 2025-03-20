@@ -22,6 +22,7 @@ public class Order
     [Column(TypeName = "decimal(18, 2)")]
     public decimal? TotalAmount { get; set; }
 
+    public string? Status { get; set; }
     public ICollection<OrderDetail> OrderDetails { get; } = new List<OrderDetail>();
 
 }

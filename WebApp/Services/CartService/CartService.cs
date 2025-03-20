@@ -40,7 +40,7 @@ public class CartService : ICartService
             sameItem.Quantity += item.Quantity;
         }
 
-        _count = cartList.Count;
+        _count = cartList.Sum(i => i.Quantity);
         await _localStorage.SetAsync("cart", cartList);
 
         //_snackbar.Add($"{item.ProductName} Added to cart:", Severity.Success);
@@ -66,7 +66,7 @@ public class CartService : ICartService
             }
 
             item.Quantity = quantity;
-            _count = cart.Count;
+            _count = cart.Sum(i => i.Quantity);
             await _localStorage.SetAsync("cart", cart);
             if (OnChange != null) OnChange.Invoke();
 
@@ -87,11 +87,10 @@ public class CartService : ICartService
 
             if (result.Success == false || result.Value == null)
             {
-                _count = 0;
                 return new();
             }
 
-            _count = result.Value.Count;
+            _count = result.Value.Sum(i => i.Quantity);
             return result.Value;
 
         }
@@ -120,7 +119,7 @@ public class CartService : ICartService
         if (cartItem != null)
             cartList.Remove(cartItem);
 
-        _count = cartList.Count;
+        _count = cartList.Sum(i => i.Quantity);
         await _localStorage.SetAsync("cart", cartList);
 
         if (OnChange != null) OnChange.Invoke();
@@ -139,7 +138,7 @@ public class CartService : ICartService
         return _count;
     }
 
-    void ShowVariant(string message, Variant variant)
+    protected void ShowVariant(string message, Variant variant)
     {
 
         _snackbar.Add(message, Severity.Success, (options) =>

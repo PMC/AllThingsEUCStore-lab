@@ -1,5 +1,4 @@
-﻿@using MudBlazor.Utilities
-@using WebApp.Components.Pages.Collections
+﻿@using WebApp.Components.Pages.CartPages
 @inherits LayoutComponentBase
 
 <MudThemeProvider IsDarkMode="IsDarkMode" DefaultScrollbar="true" Theme="_myCustomTheme" />
@@ -9,17 +8,19 @@
 
 <MudLayout>
 	<MudAppBar Elevation="10">
-		<MudStaticNavDrawerToggle DrawerId="nav-drawer" Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start" />
+		<MudStaticNavDrawerToggle DrawerId="nav-drawer" Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start"/>
 		<MudText Typo="Typo.h5" Class="ml-3">AllThingsEUCStore</MudText>
-		<MudSpacer />
-		<ShoppingCartIcon />
+		<MudSpacer/>
+		<ShoppingCartIcon/>
 	</MudAppBar>
 	<MudDrawer id="nav-drawer" @bind-Open="_drawerOpen" ClipMode="DrawerClipMode.Docked" Elevation="10">
-		<NavMenu />
+		<NavMenu/>
 	</MudDrawer>
 	<MudMainContent Class="mt-16 pa-4">
 		@Body
 	</MudMainContent>
+	
+	<Footer />
 </MudLayout>
 
 <div id="blazor-error-ui" data-nosnippet>
