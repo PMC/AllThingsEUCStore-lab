@@ -5,18 +5,20 @@
 @inject ICartService CartService
 @inject IDialogService DialogService
 @inject ISnackbar Snackbar
+@inject NavigationManager NavigationManager
 
 @rendermode @(new InteractiveServerRenderMode(prerender: false))
 <PageTitle>Shopping Cart - Summary</PageTitle>
 
 <MudText Typo="Typo.h5" GutterBottom="true">Shopping Cart - Summary</MudText>
 
+
 @if (_cartItems != null && _cartItems.Any())
 {
 	<MudTable Items="@_cartItems" Dense="true"
-			  Hover="true"
-			  Bordered="true"
-			  Outlined="true">
+	          Hover="true"
+	          Bordered="true"
+	          Outlined="true">
 
 
 		<ColGroup>
@@ -28,14 +30,14 @@
 			<col style="width: auto;" />
 		</ColGroup>
 		<HeaderContent>
-			<MudTh>Product</MudTh>
+			<MudTh Style="text-align: center">Product</MudTh>
 			<MudTh>Description</MudTh>
 			<MudTh Style="text-align: center">Unit price</MudTh>
 			<MudTh Style="text-align: center">Qty</MudTh>
 			<MudTh Style="text-align: right">Total</MudTh>
 		</HeaderContent>
 		<RowTemplate>
-			<MudTd DataLabel="Image"><MudImage Src="default.jpg" ObjectFit="ObjectFit.ScaleDown" Width="96" ObjectPosition="ObjectPosition.Left" Elevation="2" /></MudTd>
+			<MudTd DataLabel="Image"><MudImage Src="default.jpg" ObjectFit="ObjectFit.ScaleDown" Width="96" ObjectPosition="ObjectPosition.Center" Elevation="2" /></MudTd>
 			<MudTd DataLabel="Product">@context.ProductName<MudSpacer />Available</MudTd>
 			<MudTd DataLabel="Unit price" Style="text-align: center">@context.Price.ToString("c")</MudTd>
 			<MudTd DataLabel="Qty" >
@@ -48,10 +50,21 @@
 					</MudStack>
 				</MudStack>
 			</MudTd>
-
 			<MudTd Style="text-align: right" DataLabel="Total">@((context.Price * context.Quantity).ToString("c"))</MudTd>
 		</RowTemplate>
+
+		
 	</MudTable>
+	<MudStack Row="true" Class="pt-4 pb-2 mb-0" AlignItems="AlignItems.End" Justify="Justify.FlexEnd">
+		<MudText  Typo="Typo.h6" Style="font-weight: bold;">Order Total: </MudText>
+		<MudText Align="Align.Right" Typo="Typo.h5"  Style="font-weight: bold;">@_cartItems.Sum(item => item.Quantity * item.Price).ToString("c")</MudText>
+	</MudStack>
+
+
+	<MudStack Row="true"  AlignItems="AlignItems.End" Justify="Justify.FlexEnd">
+		<MudButton Href="checkout" Class="pa-4" EndIcon="@Icons.Material.Filled.DoubleArrow" IconSize="Size.Large" Color="Color.Primary" Variant="Variant.Filled">Proceed to checkout</MudButton>
+	</MudStack>
+
 }
 else
 {
@@ -60,6 +73,7 @@ else
 
 
 @code {
+	private int _index;
 	private List<CartItem> _cartItems = new();
 
 	private OrderInfo _order = new();
@@ -111,6 +125,8 @@ else
 
 		});
 	}
+
+
 
 }
 

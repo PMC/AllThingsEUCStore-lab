@@ -3,7 +3,9 @@
 @rendermode @(new InteractiveServerRenderMode(prerender: false))
 
 
-<MudGrid>
+<MudContainer MaxWidth="MaxWidth.Large">
+
+<MudGrid> 
 
 	<MudItem md="6" xs="12" Style="background-color: white">
 		<MudText Typo="Typo.h6">Shipping address</MudText>
@@ -102,7 +104,7 @@
 		}
 	</MudItem>
 </MudGrid>
-
+</MudContainer>
 
 
 @code {

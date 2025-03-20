@@ -1,5 +1,4 @@
-﻿@page "/cart2"
-@using Microsoft.IdentityModel.Tokens
+﻿@using Microsoft.IdentityModel.Tokens
 @using WebApp.Entities
 @using WebApp.Services.CartService
 @inject ICartService CartService
@@ -7,77 +6,67 @@
 @inject ISnackbar Snackbar
 
 @rendermode @(new InteractiveServerRenderMode(prerender: false))
-<PageTitle>Shopping Cart</PageTitle>
+<PageTitle>Shopping Cart - Summary</PageTitle>
+
+<MudText Typo="Typo.h5" GutterBottom="true">Shopping Cart - Summary</MudText>
 
 
-	<MudText Typo="Typo.h5" GutterBottom="true">Shopping Cart</MudText>
-	
-	@if (_cartItems != null && _cartItems.Any())
-	{
-		<MudTable  Items="@_cartItems" Hover="true" Dense="true" Breakpoint="Breakpoint.Sm" Elevation="1" Outlined="false" FixedHeader="false"
-		           OnCommitEditClick="@(() => Snackbar.Add("Commit Edit Handler Invoked"))" 
-		           CanCancelEdit="true" 
-		           CommitEditTooltip="Commit Edit"
-		          
-		          
-		           RowEditCommit="ItemHasBeenCommitted" 
-		           IsEditRowSwitchingBlocked="true"
-		           ApplyButtonPosition="TableApplyButtonPosition.End" 
-		           EditButtonPosition="TableEditButtonPosition.End" EditTrigger="TableEditTrigger.EditButton"
-		>
-			<ColGroup > 
-				<col width="40"/>
-				<col style="width: 40%;"/>
-				<col/>
-				<col/>
-				<col/>
+@if (_cartItems != null && _cartItems.Any())
+{
+	<MudTable Items="@_cartItems" Dense="true"
+			  Hover="true"
+			  Bordered="true"
+			  Outlined="true">
 
-			</ColGroup>
-			<HeaderContent  >
-				<MudTh>Image</MudTh>
-				<MudTh>Product</MudTh>
-				<MudTh Style="text-align: center" >Quantity</MudTh>
-				<MudTh Style="text-align: right">Price</MudTh>
-				<MudTh Style="text-align: right">Total</MudTh>
 
-			</HeaderContent>
-			<RowTemplate >
-				<MudImage Src="default.jpg" ObjectFit="ObjectFit.ScaleDown" Width="64"></MudImage>
-				<MudTd DataLabel="Product">@context.ProductName</MudTd>
-				<MudTd DataLabel="Quantity" Style="text-align: center">@context.Quantity</MudTd>
-				<MudTd DataLabel="Price" Style="text-align: right">@context.Price.ToString("c")</MudTd>
-				<MudTd DataLabel="Total" Style="text-align: right">@((context.Quantity * context.Price).ToString("C"))</MudTd>
-			</RowTemplate>
-			<RowEditingTemplate>
-				<MudImage Src="default.jpg" ObjectFit="ObjectFit.ScaleDown" Width="128"></MudImage>
-				<MudTd />
-				<MudTd />
+		<ColGroup>
+			<col style="width: auto;" />
+			<col style="width: 60%;" />
+			<col />
+			<col style="width: auto;" />
+			<col style="width: auto;" />
+			<col style="width: auto;" />
+		</ColGroup>
+		<HeaderContent>
+			<MudTh Style="text-align: center">Product</MudTh>
+			<MudTh>Description</MudTh>
+			<MudTh Style="text-align: center">Unit price</MudTh>
+			<MudTh Style="text-align: center">Qty</MudTh>
+			<MudTh Style="text-align: right">Total</MudTh>
+		</HeaderContent>
+		<RowTemplate>
+			<MudTd DataLabel="Image"><MudImage Src="default.jpg" ObjectFit="ObjectFit.ScaleDown" Width="96" ObjectPosition="ObjectPosition.Left" Elevation="2" /></MudTd>
+			<MudTd DataLabel="Product">@context.ProductName<MudSpacer />Available</MudTd>
+			<MudTd DataLabel="Unit price" Style="text-align: center">@context.Price.ToString("c")</MudTd>
+			<MudTd DataLabel="Qty">
+				<MudStack Row="false" AlignItems="AlignItems.Center">
+					<MudText Align="Align.Center" Typo="Typo.subtitle1">@context.Quantity</MudText>
+					<MudStack Row="true" AlignItems="AlignItems.Center">
+						<MudIconButton Icon="@Icons.Material.Outlined.Remove" Variant="Variant.Filled" Size="Size.Small" Color="Color.Success" />
 
-				<MudTd DataLabel="Quantity" Style="text-align: right">
-					Quantity: 
-					<MudNumericField @bind-Value="context.Quantity" Required Min="1" MaxLength="2" Typo="Typo.h4"/>
-				</MudTd>
-			</RowEditingTemplate>
-			<EditButtonContent Context="button">
-				<MudIconButton Size="@Size.Medium"  Icon="@Icons.Material.Outlined.Edit" OnClick="@button.ButtonAction"
-				Variant="Variant.Filled" 
-				           Color="Color.Primary" Disabled="@button.ButtonDisabled"></MudIconButton>
-			</EditButtonContent>
-		</MudTable>
-		<MudStack Row="true" Class="pt-8 pb-16 "  >
-			<MudText  Typo="Typo.h5" Style="font-weight: bold;">Order Total: </MudText>
-			<MudSpacer/>
-		<MudText Align="Align.Right" Typo="Typo.h5"  Style="font-weight: bold;">@_cartItems.Sum(item => item.Quantity * item.Price).ToString("c")</MudText>
-		</MudStack>
+						<MudIconButton Icon="@Icons.Material.Outlined.Add" Variant="Variant.Filled" Size="Size.Small" Color="Color.Success" />
+					</MudStack>
+				</MudStack>
+			</MudTd>
+			<MudTd Style="text-align: right" DataLabel="Total">@((context.Price * context.Quantity).ToString("c"))</MudTd>
+		</RowTemplate>
 
-	}
-	else
-	{
-		<MudText>Your cart is empty.</MudText>
-	}
+
+	</MudTable>
+	<MudStack Row="true" Class="pt-8 pb-16 " AlignItems="AlignItems.End" Justify="Justify.FlexEnd">
+		<MudText Typo="Typo.h6" Style="font-weight: bold;">Order Total: </MudText>
+		<MudText Align="Align.Right" Typo="Typo.h5" Style="font-weight: bold;">@_cartItems.Sum(item => item.Quantity * item.Price).ToString("c")</MudText>
+	</MudStack>
+
+}
+else
+{
+	<MudText>Your cart is empty.</MudText>
+}
 
 
 @code {
+	private int _index;
 	private List<CartItem> _cartItems = new();
 
 	private OrderInfo _order = new();
@@ -97,7 +86,7 @@
 
 	protected override async Task OnAfterRenderAsync(bool firstRender)
 	{
-		if(firstRender)
+		if (firstRender)
 		{
 			var result = await CartService.GetCartItems();
 			if (result.IsNullOrEmpty())
@@ -114,7 +103,7 @@
 
 	private void ItemHasBeenCommitted(object? obj)
 	{
-		AddEditionEvent($"RowEditCommit event: Changes to Element : committed",Variant.Text);
+		AddEditionEvent($"RowEditCommit event: Changes to Element : committed", Variant.Text);
 
 	}
 
