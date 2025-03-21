@@ -77,21 +77,6 @@ else
 	private int _index;
 	private List<CartItem> _cartItems = new();
 
-	private OrderInfo _order = new();
-
-	private void PlaceOrder()
-	{
-
-		// TODO: Implement order placement logic here
-		Console.WriteLine("Order placed!");
-		Console.WriteLine($"Name: {_order.FirstName} {_order.LastName}");
-		Console.WriteLine($"Address: {_order.Address1},{_order.Address2}, {_order.City}, {_order.ZipCode}");
-		Console.WriteLine($"Email: {_order.Email}");
-		Console.WriteLine($"Phone: {_order.PhoneNumber}");
-	}
-
-
-
 	protected override async Task OnAfterRenderAsync(bool firstRender)
 	{
 		if (firstRender)

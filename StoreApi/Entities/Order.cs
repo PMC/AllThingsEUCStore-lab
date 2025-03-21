@@ -8,15 +8,17 @@ public class Order
 {
     public int OrderId { get; set; }
 
-    public required int CustomerId { get; set; } //just for reference, customer info needs to be archived in this record
-
+    public required string CustomerId { get; set; } //just for reference, customer info needs to be archived in this record
     public required DateTime OrderDate { get; set; } = DateTime.UtcNow;
 
-    public required string CustomerName { get; set; }
-    public string? CustomerEmail { get; set; }
-    //public string CustomerPhone { get; set; }
-    public string? CustomerAddress1 { get; set; }
-    public string? CustomerAddress2 { get; set; }
+    public string? FirstName { get; set; }
+    public string? LastName { get; set; }
+    public string? Address1 { get; set; }
+    public string? Address2 { get; set; }
+    public string? City { get; set; }
+    public string? ZipCode { get; set; }
+    public string? Email { get; set; }
+    public string? PhoneNumber { get; set; }
 
     [DataType(DataType.Currency)]
     [Column(TypeName = "decimal(18, 2)")]

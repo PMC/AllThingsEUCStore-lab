@@ -1,6 +1,6 @@
 ﻿namespace WebApp.Entities;
 
-public class OrderInfo
+public class OrderInfoNO
 {
     public string? FirstName { get; set; }
     public string? LastName { get; set; }

@@ -12,6 +12,7 @@ public class OrderDetail
     public Order Order { get; set; } = null!; // Required reference navigation to principal
 
     public int ProductId { get; set; }
+    public string ProductName { get; set; }
 
     public Product Product { get; set; } = null!; // Required reference navigation to principal
     public required int Quantity { get; set; }
