@@ -1,9 +1,11 @@
 ﻿@page "/checkout"
-@using Microsoft.SqlServer.Server
+@using System.Net.Http.Headers;
 @using StoreApi.Entities
 @using WebApp.Entities
 @using WebApp.Services.CartService
 @inject ICartService CartService
+@inject HttpClient HttpClient
+@inject IDialogService DialogService
 @rendermode @(new InteractiveServerRenderMode(prerender: false))
 
 
@@ -11,9 +13,9 @@
 
 	<MudGrid>
 
-		<MudItem md="6" xs="12" Style="background-color: white" >
+		<MudItem md="6" xs="12" Style="background-color: white">
 
-			<MudForm  @bind-IsValid="@success"  >
+			<MudForm @bind-IsValid="@success">
 				<MudText Typo="Typo.h6">Shipping address</MudText>
 				<MudGrid Style="padding-right: 2rem">
 
@@ -76,7 +78,7 @@
 
 			</MudForm>
 			<MudStack Row="false" AlignItems="AlignItems.End" Class="mt-10 mb-10 mr-7">
-				<MudButton Variant="Variant.Filled"  Color="Color.Success" EndIcon="@Icons.Material.Filled.Send" OnClick="PlaceOrder" Class="pa-4 pr-6 pl-6" IconSize="Size.Large" Disabled="@(!success)">
+				<MudButton Variant="Variant.Filled" Color="Color.Success" EndIcon="@Icons.Material.Filled.Send" OnClick="PlaceOrder" Class="pa-4 pr-6 pl-6" IconSize="Size.Large" Disabled="@(!success)">
 					Place Order
 				</MudButton>
 			</MudStack>
@@ -89,24 +91,24 @@
 
 			<MudSimpleTable>
 				<thead>
-				<tr>
-					@foreach (var h in "Product, Quantity, Price".Split(","))
-					{
-						<th>@h</th>
-					}
-				</tr>
+					<tr>
+						@foreach (var h in "Product, Quantity, Price".Split(","))
+						{
+							<th>@h</th>
+						}
+					</tr>
 				</thead>
 				<tbody>
-					
-						@foreach (var item in _order.OrderDetails)
-						{
+
+					@foreach (var item in _order.OrderDetails)
+					{
 						<tr>
 							<td>@item.ProductName</td>
 							<td>@item.Quantity</td>
 							<td>@item.Price.ToString("c")</td>
 
 						</tr>
-						}
+					}
 
 				</tbody>
 			</MudSimpleTable>
@@ -131,10 +133,10 @@
 	private async Task CreateNewOrder()
 	{
 		_order = new Order()
-		{
-			OrderDate = DateTime.UtcNow,
-			CustomerId = "new"
-		};
+			{
+				CustomerId = "new",
+				OrderDate = DateTime.UtcNow
+			};
 		_cardInfo = new();
 
 		//wrap cart into order
@@ -144,27 +146,69 @@
 		foreach (var cartItem in _cartItems)
 		{
 			_order.OrderDetails.Add(new OrderDetail()
-			{
-				Quantity = cartItem.Quantity,
-				ProductId = cartItem.ProductId,
-				ProductName = cartItem.ProductName,
-				Price = cartItem.Price,
-			});
-			
+				{
+					Quantity = cartItem.Quantity,
+					ProductId = cartItem.ProductId,
+					Price = cartItem.Price,
+					ProductName = cartItem.ProductName
+				});
+
 		}
 
-		_order.TotalAmount = _order.OrderDetails.Sum(x => x.Quantity * x.Price);
+
 	}
 
-	private void PlaceOrder()
+	private async void PlaceOrder()
 	{
-		
-		// TODO: Implement order placement logic here
+		var newOrder = new CreateOrderDto()
+		{
+			CustomerId = _order.CustomerId,
+			FirstName = _order.FirstName,
+			LastName = _order.LastName,
+			City = _order.City,
+
+			Address1 = _order.Address1,
+			Address2 = _order.Address2,
+			Email = _order.Email,
+			ZipCode = _order.ZipCode,
+
+		};
+		newOrder.OrderItems = new List<OrderItemDto>();
+		foreach (var o in _order.OrderDetails)
+		{
+			var x = new OrderItemDto();
+			x.Quantity = o.Quantity;
+			x.ProductId = o.ProductId;
+			newOrder.OrderItems.Add( x);
+		}
+		var request = new HttpRequestMessage
+		{
+			Method = HttpMethod.Post,
+			RequestUri = new Uri("https://localhost:7110/orders"),
+			Content = new StringContent($"{System.Text.Json.JsonSerializer.Serialize(newOrder)}")
+			{
+				Headers =
+				{
+					ContentType = new MediaTypeHeaderValue("application/json")
+				}
+			}
+
+		};
+		using (var response = await HttpClient.SendAsync(request))
+		{
+			response.EnsureSuccessStatusCode();
+			var body = await response.Content.ReadAsStringAsync();
+			Console.WriteLine(body);
+		}
+
 		Console.WriteLine("Order placed!");
 		Console.WriteLine($"Name: {_order.FirstName} {_order.LastName}");
 		Console.WriteLine($"Address: {_order.Address1},{_order.Address2}, {_order.City}, {_order.ZipCode}");
 		Console.WriteLine($"Email: {_order.Email}");
 		Console.WriteLine($"Phone: {_order.PhoneNumber}");
 		Console.WriteLine($"Credit: {_cardInfo.CreditCard}");
+
+		
+		CartService.EmptyCart();
 	}
 }

@@ -1,4 +1,5 @@
 using Scalar.AspNetCore;
+using StoreApi.Controllers;
 using StoreApi.Data;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -22,6 +23,9 @@ if (app.Environment.IsDevelopment())
     app.MapScalarApiReference();
     app.MapOpenApi();
 }
+
+// Map the API endpoints
+app.MapOrderEndpoints();
 
 app.UseHttpsRedirection();
 

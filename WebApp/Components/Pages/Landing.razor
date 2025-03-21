@@ -1,0 +1,141 @@
+﻿<h3>Landing</h3>
+
+
+	<style>
+	
+
+		.hero {
+			display: flex;
+			justify-content: space-around;
+			align-items: center;
+			padding: 5rem 2rem;
+			background-color: #ecf0f1;
+			flex-wrap: wrap;
+		}
+
+			.hero h1 {
+				font-size: 3rem;
+				margin-bottom: 1rem;
+			}
+
+			.hero p {
+				font-size: 1.2rem;
+				line-height: 1.6;
+			}
+
+		.product-grid {
+			display: grid;
+			grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+			gap: 2rem;
+			padding: 4rem 2rem;
+			background-color: #fff;
+		}
+
+		.product-card {
+			text-align: center;
+			box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+			border-radius: 8px;
+			overflow: hidden;
+			transition: transform 0.2s ease-in-out;
+		}
+
+			.product-card:hover {
+				transform: translateY(-5px);
+			}
+
+		.product-image {
+			width: 100%;
+			height: auto;
+		}
+
+		.product-info {
+			padding: 1rem;
+		}
+
+		.product-title {
+			font-size: 1.2rem;
+			margin-bottom: 0.5rem;
+		}
+
+		.product-description {
+			font-size: 0.9rem;
+			color: #777;
+		}
+
+		.benefits {
+			padding: 4rem 2rem;
+			background-color: #ecf0f1;
+			text-align: center;
+		}
+
+			.benefits h2 {
+				font-size: 2rem;
+				margin-bottom: 2rem;
+			}
+
+		.benefit-item {
+			display: flex;
+			align-items: center;
+			justify-content: space-between;
+			padding: 0.5rem 1rem;
+			border-bottom: 1px solid #ccc;
+			margin-bottom: 1rem;
+		}
+
+		.benefit-icon {
+			width: 2rem;
+			height: 2rem;
+			margin-right: 1rem;
+		}
+
+	
+	</style>
+
+
+
+	<div class="hero">
+		<div>
+			<h2>About Us</h2>
+			<p>At Blazing Fast, we are passionate about providing you with the fastest and most innovative electric unicycles and scooters for your urban mobility needs. Our commitment is to offer high-quality products that meet your demands for speed, style, and sustainability.</p>
+		</div>
+		<img src="https://via.placeholder.com/400x300?text=Electric+Unicycle" alt="Blazing Fast Electric Unicycle" class="product-image">
+	</div>
+
+	<div class="product-grid">
+		<div class="product-card">
+			<img src="https://via.placeholder.com/200x150?text=Product+1" alt="Product 1" class="product-image">
+			<div class="product-info">
+				<h3 class="product-title">Speedster Unicycle</h3>
+				<p class="product-description">Experience unmatched speed and agility with our Speedster unicycle.</p>
+			</div>
+		</div>
+		<div class="product-card">
+			<img src="https://via.placeholder.com/200x150?text=Product+2" alt="Product 2" class="product-image">
+			<div class="product-info">
+				<h3 class="product-title">Zippy Scooter</h3>
+				<p class="product-description">Enjoy a smooth ride with our eco-friendly Zippy scooter.</p>
+			</div>
+		</div>
+		<!-- Add more product cards as needed -->
+	</div>
+
+	<div class="benefits">
+		<h2>Why Choose Us?</h2>
+		<div class="benefit-item">
+			<img src="https://via.placeholder.com/20x20?text=Speed" alt="Speed Icon" class="benefit-icon">
+			<p>Blazing fast speeds for your urban adventures.</p>
+		</div>
+		<div class="benefit-item">
+			<img src="https://via.placeholder.com/20x20?text=Eco-Friendly" alt="Eco-Friendly Icon" class="benefit-icon">
+			<p>Designed with the environment in mind.</p>
+		</div>
+		<div class="benefit-item">
+			<img src="https://via.placeholder.com/20x20?text=Convenience" alt="Convenience Icon" class="benefit-icon">
+			<p>Easy to use and maintain for your convenience.</p>
+		</div>
+	</div>
+
+	<footer>
+		<p>&copy; 2023 Blazing Fast. All rights reserved.</p>
+	</footer>
+
