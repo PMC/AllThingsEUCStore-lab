@@ -6,6 +6,8 @@
 @inject ICartService CartService
 @inject HttpClient HttpClient
 @inject IDialogService DialogService
+@inject ISnackbar Snackbar
+@inject NavigationManager NavigationManager
 @rendermode @(new InteractiveServerRenderMode(prerender: false))
 
 
@@ -208,7 +210,21 @@
 		Console.WriteLine($"Phone: {_order.PhoneNumber}");
 		Console.WriteLine($"Credit: {_cardInfo.CreditCard}");
 
-		
+		ShowVariant("Order Sent! Thank you!", Variant.Filled);
 		CartService.EmptyCart();
+		
+	}
+
+	protected void ShowVariant(string message, Variant variant)
+	{
+
+		Snackbar.Add(message, Severity.Success, (options) =>
+		{
+			options.CloseAfterNavigation = true;
+			options.SnackbarVariant = variant;
+			options.VisibleStateDuration = 2000;
+
+
+		});
 	}
 }
