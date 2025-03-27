@@ -1,7 +1,8 @@
 # AllThingsEUCStore-lab
 
-Welcome to the AllThingsEUCStore-lab repository! This repository contains the code for a comprehensive End-User Computing (EUC) Store lab, designed to provide a practical and educational environment for exploring the functionalities and capabilities of an EUC store application.
+Welcome to the AllThingsEUCStore repository! 
 
+This repository contains the code for a Electric Unicycle (EUC) Store, designed to provide a practical and educational environment for exploring the functionalities of an EUC store web application.
 
 ## Table of Contents
 
@@ -16,7 +17,7 @@ Welcome to the AllThingsEUCStore-lab repository! This repository contains the co
 
 ## Introduction
 
-The AllThingsEUCStore-lab is a project that simulates an EUC store environment. It is designed for educational purposes, allowing users to interact with and understand the workings of an EUC store application. The project includes a web interface for managing products and orders.
+The AllThingsEUCStore-lab is a project that simulates an Electric Unicycle (EUC) Store environment. It is designed for educational purposes, allowing users to interact with and understand the workings of an E-Commerce store web application. The project includes a web interface for managing products and orders and a Store API with a local SQLite database that is included in this repository.
 
 ## Features
 
