@@ -1,13 +1,7 @@
-# AllThingsEUCStore
-
-
-Sure! Here's a professional README for the `AllThingsEUCStore-lab` repository:
-
----
-
 # AllThingsEUCStore-lab
 
 Welcome to the AllThingsEUCStore-lab repository! This repository contains the code for a comprehensive End-User Computing (EUC) Store lab, designed to provide a practical and educational environment for exploring the functionalities and capabilities of an EUC store application.
+
 
 ## Table of Contents
 
@@ -22,12 +16,11 @@ Welcome to the AllThingsEUCStore-lab repository! This repository contains the co
 
 ## Introduction
 
-The AllThingsEUCStore-lab is a project that simulates an EUC store environment. It is designed for educational purposes, allowing users to interact with and understand the workings of an EUC store application. The project includes a web interface for managing products, customers, and orders.
+The AllThingsEUCStore-lab is a project that simulates an EUC store environment. It is designed for educational purposes, allowing users to interact with and understand the workings of an EUC store application. The project includes a web interface for managing products and orders.
 
 ## Features
 
 - **Product Management**: Add, update, and delete products in the store.
-- **Customer Management**: Manage customer information and track their orders.
 - **Order Management**: Create and manage customer orders.
 - **SQLite Database**: Uses SQLite for data storage, ensuring a lightweight and easy-to-use database solution.
 - **RESTful API**: StoreApi provides a RESTful API to interact with the database.
@@ -35,7 +28,7 @@ The AllThingsEUCStore-lab is a project that simulates an EUC store environment. 
 ## Technologies Used
 
 - **HTML**: 56.4%
-- **C#**: 43.3%
+- **Blazor C#**: 43.3%
 - **CSS**: 0.3%
 
 ## Setup and Installation
@@ -48,32 +41,40 @@ To set up the project locally, follow these steps:
     cd AllThingsEUCStore-lab
     ```
 
-2. **Install Dependencies**:
+2. **Run the Store API**:
     - Ensure you have the .NET SDK installed on your machine.
     - Navigate to the project directory and restore the dependencies:
     ```bash
-    dotnet restore
+    cd StoreApi
+	dotnet run -lp https
     ```
 
-3. **Build the Project**:
+3. **Run the Web Application**:
     ```bash
-    dotnet build
-    ```
-
-4. **Run the Application**:
-    ```bash
+	cd WebApp
     dotnet run
     ```
 
 ## Usage
 
-Once the application is running, you can access the web interface by navigating to `http://localhost:5000` in your web browser. From there, you can manage products, customers, and orders using the provided UI.
+Once the application is running, you can access the web interface by navigating to 
+`https://localhost:7266/`
+or
+`http://localhost:5050` in your web browser.
+
+
+## Store API
+
+To interact with the database, you can use the provided RESTful API endpoints.
+The API documentation is available in the `StoreApi` project directory.
+
+Navigate to https://localhost:7110/scalar/v1.666 to access the Store API.
 
 ## Database
 
 The project uses an SQLite database, which is provided by the `StoreApi`. The database file is included in the project, and the connection string is configured in the `appsettings.json` file.
 
-To interact with the database, you can use the provided RESTful API endpoints. The API documentation is available in the `StoreApi` project directory.
+ 
 
 ## License
 
