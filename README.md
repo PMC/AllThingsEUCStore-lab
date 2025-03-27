@@ -28,9 +28,8 @@ The AllThingsEUCStore-lab is a project that simulates an Electric Unicycle (EUC)
 
 ## Technologies Used
 
-- **HTML**: 56.4%
-- **Blazor C#**: 43.3%
-- **CSS**: 0.3%
+- **Blazor NET 9**
+- **MudBlazor**
 
 ## Setup and Installation
 
