@@ -84,7 +84,7 @@ This project is licensed under the MIT License. See the [LICENSE](LICENSE) file 
 ---
 
 ## Example Post for order:
-
+```
 {
   "customerId": "5f5a3c1c-3e38-49a0-b2c4-0b702b2b73d6",
   "firstName": "John",
@@ -97,7 +97,7 @@ This project is licensed under the MIT License. See the [LICENSE](LICENSE) file 
   "phoneNumber": "+46000333",
   "totalAmount": 1,
   "status": "pending",
-"orderItems": [
+  "orderItems": [
     {
       "productId": 1,
       "quantity": 1
@@ -108,3 +108,4 @@ This project is licensed under the MIT License. See the [LICENSE](LICENSE) file 
     }	
   ]
 }
+```
