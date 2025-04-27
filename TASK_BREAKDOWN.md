@@ -5,7 +5,7 @@ Admin side will contain users with roles, order handling, CRUD items for sale.
 
 See Tasks for breakdown
 
-## Frontemd and Backend breakdown
+## Frontend and Backend breakdown
 ### Backend
 • Authentication and Authorization using a guide to avoid "template hell" and overly complicated user tables (SQL)
 • Rolles: Admin and Customer
