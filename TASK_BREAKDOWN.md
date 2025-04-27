@@ -104,9 +104,9 @@ Tasks:
 	
 
 # Technologies
-• Blazor and MudBlazor pages
-• OpenApi with Scala
-• Net 9 project
-• JavaScript
-• SQLite might migrate to postgres when Aspire (container) is up and kicking, depends on time
+- Blazor and MudBlazor pages
+- OpenApi with Scala
+- Net 9 project
+- JavaScript
+- SQLite might migrate to postgres when Aspire (container) is up and kicking, depends on time
 
