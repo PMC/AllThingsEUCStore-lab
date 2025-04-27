@@ -19,6 +19,7 @@ This repository contains the code for a Electric Unicycle (EUC) Store, designed 
 
 The AllThingsEUCStore-lab is a project that simulates an Electric Unicycle (EUC) Store environment. It is designed for educational purposes, allowing users to interact with and understand the workings of an E-Commerce store web application. The project includes a web interface for managing products and orders and a Store API with a local SQLite database that is included in this repository.
 
+See [TASK_BREAKDOWN.md](https://github.com/PMC/AllThingsEUCStore-lab/blob/master/TASK_BREAKDOWN.md) for how I planned this project.
 ## Features
 
 - **Product Management**: Add, update, and delete products in the store.
