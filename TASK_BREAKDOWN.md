@@ -7,41 +7,41 @@ See Tasks for breakdown
 
 ## Frontend and Backend breakdown
 ### Backend
-• Authentication and Authorization using a guide to avoid "template hell" and overly complicated user tables (SQL)
-• Rolles: Admin and Customer
-• API (OpenApi) for access to database, actually not needed but good for training and showcase
+- Authentication and Authorization using a guide to avoid "template hell" and overly complicated user tables (SQL)
+- Rolles: Admin and Customer
+- API (OpenApi) for access to database, actually not needed but good for training and showcase
 
 #### Database - SQLIte
-• Design Tables
+- Design Tables
 
 ### Frontend
-• Front Page
-• Header
-• Navbar menu with categories, like brand, suspension, etc
-• Information about the project
-• Footer with links
-• Items with filter possibilities (search basically)
-• Description of items - Detail, Spec, nr of items in store, price etc
-• Add to cart
-• Contact page (if got time)
-• About page
+- Front Page
+- Header
+- Navbar menu with categories, like brand, suspension, etc
+- Information about the project
+- Footer with links
+- Items with filter possibilities (search basically)
+- Description of items - Detail, Spec, nr of items in store, price etc
+- Add to cart
+- Contact page (if got time)
+- About page
 
 #### Frontend Auth
-• Register, first user will be assigned Admin role
-• Login
-• Use address for Cart
-• Must login to proceed with buying items from the cart
-• Cart handling
+- Register, first user will be assigned Admin role
+- Login
+- Use address for Cart
+- Must login to proceed with buying items from the cart
+- Cart handling
 
 #### Frontend Admin
-• CRUD items in the store
-• CRUD Categories
-• View new unhandled orders
-• View old orders
-• View all orders
-• View Users
-• Assign Roles
-• Contact messages
+- CRUD items in the store
+- CRUD Categories
+- View new unhandled orders
+- View old orders
+- View all orders
+- View Users
+- Assign Roles
+- Contact messages
 
 
 ## *** Tasks Breakdown ***
