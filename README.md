@@ -84,7 +84,7 @@ This project is licensed under the MIT License. See the [LICENSE](LICENSE) file 
 ---
 
 ## Example Post for order:
-```
+```JSON
 {
   "customerId": "5f5a3c1c-3e38-49a0-b2c4-0b702b2b73d6",
   "firstName": "John",
